@@ -124,10 +124,10 @@ help 使用所有群通用版本：命令示例统一显示 `！`，使用 `#` �
 
 合成程序及图标已放入 `vendor/dan-sticker/`。服务在首次出图时自动启动，监听本机随机端口，随机器人退出，无需另开终端。缓存位于 `data/dan-sticker/`，单独限制为最多 300 个文件；合成使用独立队列，不占普通查询队列。底图最大 20 MB，支持 PNG、JPEG、GIF、WebP、BMP；GIF 保留逐帧时长和循环次数，动画 PNG／WebP 输出为 GIF。
 
-使用 dan 需要 Python 3 与 Pillow。在 `.env` 的 `DAN_PYTHON` 填入安装了 Pillow 的 Python 可执行文件完整路径；留空时程序探测可用环境，最终尝试 PATH 中的 `python`。安装依赖示例：
+使用 dan 需要 Python 3、Pillow 和 NumPy。在 `.env` 的 `DAN_PYTHON` 填入安装了 Pillow 和 NumPy 的 Python 可执行文件完整路径；留空时程序探测可用环境，最终尝试 PATH 中的 `python`。安装依赖示例：
 
 ```powershell
-python -m pip install Pillow
+python -m pip install -r vendor/dan-sticker/requirements.txt
 ```
 
 修改后重启机器人。也可以直接在本机出图：

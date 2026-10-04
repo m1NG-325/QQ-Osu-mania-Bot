@@ -3,13 +3,13 @@
   "files": [
     {
       "path": ".env.example",
-      "bytes": 909,
-      "sha256": "9f8df53b8337bceddd69f11c39380140a45a0cf7598dc1419ea7e01a9a446c82"
+      "bytes": 917,
+      "sha256": "0554697db32be80936e937daffa63c7e66155006e43f6ce1231d67632680bd77"
     },
     {
       "path": ".github/workflows/test.yml",
-      "bytes": 675,
-      "sha256": "cfaecaf69576ac82b9f7d864d40d1011334ce8ed1fd1203fbedcc8015c431590"
+      "bytes": 730,
+      "sha256": "0180efbed46ccec7a57e330b22b8219875466fc057f9e13c7741394244b5e9e6"
     },
     {
       "path": ".gitignore",
@@ -678,13 +678,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 12333,
-      "sha256": "55d1888aa2b4c5f41a265c408e069c39820a24516a76e9acdb66ddb50c1f4780"
+      "bytes": 12383,
+      "sha256": "a6c7b06688bfd521df069a6dcb970bd3588dff47bb1ac9751713d4c5c0db7b63"
     },
     {
       "path": "RELEASE_NOTES.md",
-      "bytes": 4815,
-      "sha256": "4a35a04b67b6877709e62f77fea4ebe9d43a04b1730ce848936c049e7d8f3cbb"
+      "bytes": 5165,
+      "sha256": "3a2678ae0c46e4d2947fb7bf43b0ca3b27aad092361719a405edf6ad383d2aeb"
     },
     {
       "path": "scripts/export-demo.js",
@@ -768,8 +768,8 @@
     },
     {
       "path": "src/dan-sticker.js",
-      "bytes": 9836,
-      "sha256": "42c19f05eddcfac31d313c534d1659be336aad9620d7b9771bb08eb0616736a5"
+      "bytes": 9866,
+      "sha256": "5a3442bb035df5c2c067ff78172ad5cd3dc760f6ccaebe7654e44f0e0bdd3060"
     },
     {
       "path": "src/dan-worker.js",
@@ -1043,8 +1043,8 @@
     },
     {
       "path": "USAGE.md",
-      "bytes": 9998,
-      "sha256": "2baed7594fa5274b9ba655f37b72905ed520e56437a21d8abb5d6a08180a4701"
+      "bytes": 10102,
+      "sha256": "b3bcdb5f191c7c34c6007b70fe0b28d45a4e48a07496bac1970af165ae99d1c2"
     },
     {
       "path": "vendor/dan-sticker/bot.py",
@@ -1403,8 +1403,13 @@
     },
     {
       "path": "vendor/dan-sticker/README.md",
-      "bytes": 817,
-      "sha256": "bb20294c8b1381e7a3390566402dbbbf4ad5db3a9c6278663898913d89af245b"
+      "bytes": 827,
+      "sha256": "ea5b64ccdd0a7d1f11a38a42fa793f74d47e347587e204ae28d8a5a3aa41e596"
+    },
+    {
+      "path": "vendor/dan-sticker/requirements.txt",
+      "bytes": 25,
+      "sha256": "37485135e7403d9b0fcf1e490e958b77923eefaf19d8bed39c3a62176ab22aca"
     },
     {
       "path": "vendor/dan-sticker/service.py",

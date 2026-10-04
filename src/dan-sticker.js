@@ -129,13 +129,13 @@ export class DanService {
       this.child = child;
       child.stdin.on('error', () => {});
       let ready = false, output = '';
-      const timer = setTimeout(() => { child.kill(); reject(new UserError('dan 合成服务启动超时，请检查 Python 和 Pillow。')); }, 15000);
+      const timer = setTimeout(() => { child.kill(); reject(new UserError('dan 合成服务启动超时，请检查 Python 和 Pillow 和 NumPy。')); }, 15000);
       child.stderr.on('data', () => {});
-      child.once('error', () => { clearTimeout(timer); reject(new UserError('无法启动 dan 服务，请配置 DAN_PYTHON，并安装 Pillow。')); });
+      child.once('error', () => { clearTimeout(timer); reject(new UserError('无法启动 dan 服务，请配置 DAN_PYTHON，并安装 Pillow 和 NumPy。')); });
       child.once('exit', () => {
         clearTimeout(timer);
         if (this.child === child) { this.child = null; this.starting = null; }
-        if (!ready) reject(new UserError('dan 服务启动失败，请为配置的 Python 安装 Pillow。'));
+        if (!ready) reject(new UserError('dan 服务启动失败，请为配置的 Python 安装 Pillow 和 NumPy。'));
       });
       child.stdout.on('data', chunk => {
         if (ready) return;

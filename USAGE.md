@@ -4,7 +4,7 @@
 
 ## 1. 安装并查看演示
 
-下载并解压发布包，在包含 `package.json` 的目录打开终端。安装 Node.js 22.9.0 或更高版本；使用 dan 贴图还需要 Python 3 和 Pillow。项目直接连接 NapCat / OneBot 11，不需要另外安装 NoneBot。
+下载并解压发布包，在包含 `package.json` 的目录打开终端。安装 Node.js 22.9.0 或更高版本；使用 dan 贴图还需要 Python 3，以及 Pillow 和 NumPy。项目直接连接 NapCat / OneBot 11，不需要另外安装 NoneBot。
 
 ```sh
 node --version
@@ -14,11 +14,11 @@ npm start
 
 在浏览器打开 <http://127.0.0.1:3210>。默认是演示模式，显示模拟数据；这一步不需要 QQ 登录或 osu! 密钥。终端按 Ctrl+C 停止。需要运行自检时先停止演示，再运行 `npm test`。
 
-使用 dan 时，为准备使用的 Python 安装 Pillow：
+使用 dan 时，为准备使用的 Python 安装 Pillow 和 NumPy：
 
 ```sh
-python -m pip install Pillow
-python -c "from PIL import Image; print('Pillow OK')"
+python -m pip install -r vendor/dan-sticker/requirements.txt
+python -c "from PIL import Image; import numpy; print('Python dependencies OK')"
 ```
 
 如果系统使用 `python3`，以上命令改用 `python3`，并将该可执行文件的完整路径填写到后面的 `DAN_PYTHON`。
@@ -136,7 +136,7 @@ dan 是给图片叠加段位图标和故障特效的工具，不是段位认证�
 
 支持 PNG、JPEG、GIF、WebP、BMP，底图最多20 MB。GIF保留动画；动画PNG / WebP输出为GIF。QQ内置小表情没有可下载图片时，请先转成图片或GIF发送。
 
-部署者在 `.env` 的 `DAN_PYTHON` 指定安装了 Pillow 的 Python 完整路径；含空格的路径可用双引号包住。留空时程序会探测可用环境，最终尝试 PATH 中的 `python`。首次出图自动启动合成服务，无需另开终端。
+部署者在 `.env` 的 `DAN_PYTHON` 指定安装了 Pillow 和 NumPy 的 Python 完整路径；含空格的路径可用双引号包住。留空时程序会探测可用环境，最终尝试 PATH 中的 `python`。首次出图自动启动合成服务，无需另开终端。
 
 ## 6. 如何看成绩卡
 
@@ -152,7 +152,7 @@ LN比例按长条物件数占比计算，不按长条持续时间。当前7K LN�
 | 网页是模拟数据 | 将 `BOT_MODE` 改为 `live`，配置osu!凭据并重启 |
 | 玩家查询报错 | 名字 / ID是否正确、凭据是否有效、网络是否可访问osu!；限流时稍后重试 |
 | 指令提示排队或超时 | 耗时指令受并发限制，先看 `！状态`，不要连续重复发送 |
-| dan启动失败 | 检查 `DAN_PYTHON` 指向的解释器，并用同一个解释器安装Pillow |
+| dan启动失败 | 检查 `DAN_PYTHON` 指向的解释器，并用同一个解释器安装Pillow 和 NumPy |
 | dan找不到图片 | 直接回复图片重试；被@者的图片须在本群最近50条消息中 |
 | 音频上传失败 | 检查镜像网络、群文件权限、NapCat和bot是否同机、缓存文件路径能否访问 |
 | 端口占用 | 停止自己启动的重复实例，或同时修改 `PORT` 与NapCat上报地址 |
