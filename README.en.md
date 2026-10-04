@@ -11,7 +11,7 @@ A Node.js bot for osu!mania player queries, score cards, beatmap analysis and pr
 - An osu! OAuth application for live queries.
 - NapCat and a logged-in QQ account for group commands.
 
-The automated test matrix covers Windows and Ubuntu with Node.js 22 and 24. Use NapCat's installation instructions for your operating system. Run NapCat and the bot on the same machine for the default setup, especially for audio group-file uploads.
+Use NapCat's installation instructions for your operating system. Run NapCat and the bot on the same machine for the default setup, especially for audio group-file uploads.
 
 ## Quick start: preview first
 
@@ -22,13 +22,12 @@ npm ci
 npm start
 ```
 
-Open <http://127.0.0.1:3210>. The default `demo` mode uses simulated data and needs neither osu! credentials nor QQ. Press Ctrl+C in the terminal to stop the process. To run the checks, stop the server and run `npm test`.
+Open <http://127.0.0.1:3210>. The default `demo` mode uses simulated data and needs neither osu! credentials nor QQ. Press Ctrl+C in the terminal to stop the process.
 
 For dan stickers, install the Python dependencies using the interpreter you will configure for the bot:
 
 ```sh
 python -m pip install -r vendor/dan-sticker/requirements.txt
-python -c "from PIL import Image; import numpy; print('Dependencies OK')"
 ```
 
 If your interpreter is named `python3`, use that command instead and set its full executable path in `DAN_PYTHON`.
@@ -195,19 +194,8 @@ Sunny, MSD, official stars and local dan contribution are different metrics. Dan
 
 When upgrading, stop the bot, back up your private `.env` and `data/` locally, replace application files, run `npm ci`, and restart. Do not replace local state with somebody else's runtime files. Keep backups out of the public repository.
 
-## Privacy, verification and licensing
+## Local files and licensing
 
-The public release contains example configuration and synthetic test charts. It excludes the author's QQ identifiers, real group IDs, credentials, bindings, computer identity, private installation paths, logs and caches. `.env`, `data/`, `output/`, `node_modules/`, backup folders and candidate builds are local-only. GitHub's manual upload UI does not enforce `.gitignore`.
-
-To verify a checkout:
-
-```sh
-npm ci
-npm test
-node scripts/verify-release.mjs
-npm audit --omit=dev --registry=https://registry.npmjs.org
-```
-
-`RELEASE_MANIFEST.json` records file sizes and SHA-256 hashes. The release ZIP has a separate `.sha256` file. File verification confirms release contents; it cannot guarantee perpetual availability of external services. Real QQ login and live network behavior depend on your deployment.
+Keep `.env`, `data/`, `output/`, `node_modules/` and backups out of your repository. `.env` stores configuration and credentials; `data/` stores bindings, history and caches. Back up your configuration and data before upgrading.
 
 Original project code is AGPL-3.0-only. Fonts, algorithms and other third-party files keep their own terms. See [LICENSE](LICENSE), [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and [assets/README.md](assets/README.md). User-provided dan PNGs have no independently confirmed redistribution license; the root license does not grant rights to those images. Use only input images and custom backgrounds you have permission to use.

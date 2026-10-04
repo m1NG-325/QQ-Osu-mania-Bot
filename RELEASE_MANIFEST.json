@@ -683,18 +683,18 @@
     },
     {
       "path": "README.en.md",
-      "bytes": 13602,
-      "sha256": "b3fd479a8c89e98ca7de81b642cdec4aa5120fdcf5d5ee437de15e87f24a9cdb"
+      "bytes": 12812,
+      "sha256": "a5733fd45159b762d0f6461da22a6e3b51d90ccb694e657bc882792cf8536612"
     },
     {
       "path": "README.md",
-      "bytes": 13361,
-      "sha256": "a41b1929e78a3f80c89943edcc534bb2ae3672fde697af95fb6a9898f6db16e7"
+      "bytes": 10950,
+      "sha256": "c02e5931c74ea4496af5d67c7e39e8866cdbefb6e111fd61cd4a4ea94aa43f4c"
     },
     {
       "path": "RELEASE_NOTES.md",
-      "bytes": 6470,
-      "sha256": "8a68ba36a44c9d29a71267b15d0596753debed543d1197856097bb048c37ef2c"
+      "bytes": 235,
+      "sha256": "b6aa4ec44dd570cf67ba9d0914661c77c75aa32ff8764c1a1b72dad16f2cdbdc"
     },
     {
       "path": "scripts/export-demo.js",
@@ -1063,8 +1063,8 @@
     },
     {
       "path": "USAGE.md",
-      "bytes": 10102,
-      "sha256": "57870ad49915400f8dd120b470c26a7acca3fc84eafce820446ac83de741b80c"
+      "bytes": 9923,
+      "sha256": "3454952b75cf922299748994e36971abde7900abc377360da0e1add70d5e1d32"
     },
     {
       "path": "vendor/dan-sticker/bot.py",

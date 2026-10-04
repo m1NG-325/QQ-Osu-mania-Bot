@@ -8,15 +8,14 @@ Node.js 机器人，通过 NapCat / OneBot 11 在 QQ 群查询 osu!mania 资料�
 
 ## 安装与运行
 
-需要 Node.js **22.9.0 或更高版本**，推荐维护中的 LTS。Windows 可使用 NapCat 接入 QQ；其他系统可先运行网页、测试和查询服务，NapCat 的安装方式请按其文档选择。
+需要 Node.js **22.9.0 或更高版本**，推荐维护中的 LTS。Windows 可使用 NapCat 接入 QQ；其他系统请按 NapCat 文档选择安装方式。
 
 ```sh
 npm ci
-npm test
 npm start
 ```
 
-打开 <http://127.0.0.1:3210>。默认是 demo 模式，图片标注模拟数据。项目不附带 QQ 登录文件、密钥、真实绑定、游玩记录或音频。
+打开 <http://127.0.0.1:3210>。默认是 demo 模式，使用模拟数据。
 
 设置真实查询：复制 `.env.example` 为 `.env`，设置 `BOT_MODE=live`，填写在 [osu! 账号设置](https://osu.ppy.sh/home/account/edit) 创建的 OAuth 应用 `OSU_CLIENT_ID` 与 `OSU_CLIENT_SECRET`。此程序使用公开查询的 client credentials，不要求玩家 OAuth 登录。
 
@@ -79,36 +78,17 @@ Windows 可运行 `powershell -ExecutionPolicy Bypass -File .\start.ps1`，进�
 - 预览按拍数等距，BPM/拍号改变会影响小节线；SV 只画侧栏，不模拟游戏中的实际滚动距离。倍率调整时间标尺，不重算预览标题的官方 NM 星数。
 - 推荐会把玩家 ID 发给 Mania Tracker 公共接口，不向其发送 osu! 密钥。建议收益不能相加当作总收益。音频下载依赖 Nerinyan / catboy 镜像；不绕过明确禁用的下载。
 
-## 并发、缓存与本地数据
+## 本地数据
 
-不同发起人可并发；同一发起人按请求到达顺序执行查询与状态修改。普通查询 4、耗时查询 2、计算 Worker 2、音频下载 1、图片渲染 2 个并发。推荐计算也受 Worker 限制。超时后尚未开始的任务会取消；已开始的工作保持槽位直到结束，取消的绑定不会延后写回。
+`data/` 保存绑定、历史、谱面索引和缓存，`output/` 保存日志与导出图片。升级前备份 `.env` 和 `data/`。
 
-查询预算：普通 45 秒、音频 180 秒、群榜 300 秒；渲染最多等待 60 秒，群文件上传接口最多 120 秒。完整请求还有限时，等待超过 5 秒发送状态提示。正常音频首轮下载不会再被普通查询的 45 秒预算提前截断；排队过久或外部服务异常仍可超时。
-
-`data/` 保存绑定、历史、索引、音频缓存；`output/` 保存日志和演示导出。两者均不提交。历史按发起人隔离，保留 90 天、全局最多 5000 行，关闭记录保留旧记录。旧历史迁移时保守保留已关闭偏好，无法确认归属的旧行只对本地查询开放。
-
-绑定写入带 3 份恢复备份。查询缓存 10 秒；推荐 5 分钟；图片缓存最多 40 张 / 64 MB / 10 分钟。音频缓存最多 32 首 / 300 MB，谱包下载最多 100 MB、音频最多 30 MB；ZIP 解包在独立 Worker 中，10 秒限时。谱面分析最多 50000 物件、4 MB / 2 小时；预览最长 20000 像素。
-
-日志只记录事件与错误类别，不记录命令、密钥或 QQ 消息正文。OneBot 每分钟检测接口可达性，可达不等于 QQ 在线。
+历史按发起人分别保存，保留 90 天。`！记录 关闭` 停止保存新记录，已有记录仍会保留。查询较慢时可用 `！状态` 查看队列。
 
 ## 自定义背景与素材许可
 
 `PANEL_BACKGROUND_PATH` 可设置本地背景图片完整路径，留空使用原创 SVG 背景，重启生效。真实单图卡片优先使用官方谱面背景。自定义图片由使用者自行确保有权使用。
 
-发布版使用 Noto Sans SC（SIL OFL 1.1）、原创 SVG 背景与段位徽章，合成谱面测试不包含真实歌曲。未附带原本机的 Torus、外部段位图片或真实谱面。Mod 图标来自 osu-web，保留其 AGPL-3.0 许可；内置算法保留各自 MIT 等许可。详见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) 和 [assets/README.md](assets/README.md)。自有代码采用 AGPL-3.0-only，第三方文件按各自条款。
-
-## 发布前验证
-
-```sh
-npm ci
-npm test
-npm audit --omit=dev --registry=https://registry.npmjs.org
-node scripts/verify-release.mjs
-```
-
-不要上传 `.env`、`data/`、`output/`、`node_modules/`、备份或候选目录。网页手工上传不会自动遵循 `.gitignore`；请使用发布清单。SHA-256 文件清单保存在 `RELEASE_MANIFEST.json`。Windows 与 Linux CI 配置在 `.github/workflows/test.yml`；添加配置不等于已通过 GitHub CI。
-
-help 使用所有群通用版本：命令示例统一显示 `！`，使用 `#` 命令头的群按说明替换；dan 使用说明与大小、色散、切片、块状参数放在位于“自己的绑定”上方的独立说明框，对比示例为 `！对比 playerA （Player B）`。
+字体使用 Noto Sans SC（SIL OFL 1.1），内置 SVG 背景与段位徽章。Mod 图标来自 osu-web，保留其 AGPL-3.0 许可；内置算法保留各自 MIT 等许可。详见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) 和 [assets/README.md](assets/README.md)。自有代码采用 AGPL-3.0-only，第三方文件按各自条款。
 
 ## dan 图片／动画表情贴图
 
@@ -138,7 +118,6 @@ python -m pip install -r vendor/dan-sticker/requirements.txt
 node --env-file-if-exists=.env scripts/render-dan.mjs '！dan kappa 75' '底图.gif' 'output\成品.gif'
 ```
 
-已验证：静态 PNG／WebP、GIF／动画 WebP、图片下载限制、参数错误、缓存复用，以及模拟 OneBot 的回复选图、自动 @、自定义群命令头、CQ 附图与图片回传。
 
 
 
