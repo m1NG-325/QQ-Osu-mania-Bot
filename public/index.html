@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MANIA / 查询机器人</title>
+  <style>
+    :root{color-scheme:dark;font-family:Segoe UI,Microsoft YaHei,sans-serif;background:#0b101a;color:#e5edf8}
+    *{box-sizing:border-box}body{margin:0}button,input{font:inherit}button{cursor:pointer}
+    .shell{max-width:2100px;margin:auto;min-height:100vh;display:grid;grid-template-columns:240px 1fr}
+    aside{border-right:1px solid #233044;padding:36px 25px;background:#0e1522}
+    .brand{font-size:27px;letter-spacing:5px;font-weight:800}.brand span{color:#6ce7d4}
+    .caption{font-size:12px;letter-spacing:2px;color:#8093ae;margin:9px 0 36px}
+    .badge{display:inline-block;border:1px solid #306254;background:#142c28;color:#8becd8;border-radius:30px;font-size:12px;padding:7px 12px}
+    .side-title{font-size:12px;color:#8599b4;margin:34px 0 12px;letter-spacing:2px}
+    .preset{display:block;background:transparent;border:1px solid transparent;color:#c5d2e5;text-align:left;width:100%;border-radius:10px;padding:13px 12px;margin:4px 0}
+    .preset:hover{background:#19273b;border-color:#2b405c}.preset code{color:#6ce7d4;display:inline-block;width:64px}.preset.active{background:#1b3036;border-color:#355d60}
+    .note{color:#8599b4;font-size:13px;line-height:1.9;margin-top:32px;border-top:1px solid #233044;padding-top:20px}
+    main{min-width:0;padding:26px 28px;display:flex;flex-direction:column;height:100vh}
+    header{display:flex;justify-content:space-between;align-items:center;gap:20px;border-bottom:1px solid #233044;padding-bottom:24px}
+    h1{font-size:21px;margin:0 0 8px}header p{color:#8599b4;font-size:13px;margin:0}.connection{font-size:12px;color:#92a4be;white-space:nowrap}
+    .intro{padding:16px 0 4px}.intro strong{font-size:21px;font-weight:650;letter-spacing:1px}.intro p{font-size:13px;color:#9aacc5;line-height:1.8;margin:8px 0}
+    .messages{flex:1;overflow:auto;padding:10px 8px 25px 0;scroll-behavior:smooth}
+    .message{margin:17px 0;display:flex;flex-direction:column;align-items:flex-start}.message.user{align-items:flex-end}
+    .label{font-size:11px;letter-spacing:1px;color:#7990ad;margin:0 4px 8px}.bubble{background:#162237;border:1px solid #24364e;padding:15px 19px;border-radius:15px;white-space:pre-wrap;line-height:1.8;font-size:14px;max-width:95%;overflow-wrap:anywhere}
+    .user .bubble{background:#1c393c;border-color:#34575a;color:#a8f3e4}.error{border-color:#8a505c;color:#ffc2ce}
+    .result-image{display:block;width:100%;height:auto;border-radius:16px;border:1px solid #25374a;cursor:zoom-in}.image-wrap{width:100%}.image-note{font-size:11px;color:#7e91ac;margin:8px 4px;display:flex;justify-content:space-between;gap:15px}.image-note a{color:#8becd8;text-decoration:none}
+    dialog{width:96vw;max-width:none;height:94vh;background:#15121c;border:1px solid #5e496f;border-radius:16px;padding:16px;color:#fff}dialog::backdrop{background:#000c}.zoom-scroll{overflow:auto;height:calc(100% - 45px)}dialog img{display:block;width:1920px;max-width:none}dialog button{background:#6ce7d4;border:0;border-radius:8px;padding:7px 16px;margin-bottom:12px;float:right}
+    form{display:flex;gap:12px;border:1px solid #32435d;background:#121d2e;border-radius:14px;padding:9px;box-shadow:0 10px 40px #0003}
+    input{flex:1;min-width:0;border:0;background:transparent;color:#e6edf7;padding:9px 13px;outline:none}form:focus-within{border-color:#6ce7d4}
+    .send{border:0;background:#6ce7d4;color:#102922;border-radius:9px;padding:10px 24px;font-weight:700}.send:disabled{opacity:.45;cursor:wait}
+    .footer{display:flex;justify-content:space-between;color:#7489a6;font-size:11px;margin-top:10px}
+    @media(max-width:800px){.shell{grid-template-columns:1fr}aside{padding:20px;border-right:0;border-bottom:1px solid #233044}.brand{font-size:21px}.caption{margin:5px 0 15px}.side-title,.note{display:none}.presets{display:flex;flex-wrap:wrap;margin-top:15px}.preset{width:auto;padding:8px}.preset code{width:auto;margin-right:7px}.badge{font-size:11px}main{height:calc(100vh - 260px);min-height:600px;padding:22px 18px}.intro strong{font-size:24px}.connection{display:none}.send{padding:10px 17px}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <div class="brand">MANIA<span> /</span></div><div class="caption">YOUR RHYTHM COMPANION</div>
+      <div class="badge" id="mode">正在连接本地服务</div>
+      <div class="side-title">试一条命令</div>
+      <div class="presets">
+        <button class="preset" data-command="!i Demo Player"><code>!i</code>玩家资料</button>
+        <button class="preset" data-command="!p Demo Player"><code>!p</code>最近成绩</button>
+        <button class="preset" data-command="!ps Demo Player"><code>!ps</code>成绩列表</button>
+        <button class="preset" data-command="!bp Demo Player"><code>!bp</code>最好成绩</button>
+        <button class="preset" data-command="!im Demo Player"><code>!im</code>谱师面板</button>
+        <button class="preset" data-command="!m 100001"><code>!m</code>谱面信息</button>
+        <button class="preset" data-command="!a 3773354"><code>!a</code>谱面分析</button>
+        <button class="preset" data-command="!gb 100001"><code>!gb</code>谱面背景</button>
+        <button class="preset" data-command="!bind Demo Player"><code>!bind</code>绑定查询对象</button>
+        <button class="preset" data-command="!help"><code>!help</code>命令帮助</button>
+      </div>
+      <div class="note">先在这里体验机器人。<br>演示数据全部为虚构。<br>连接真实 osu! 数据后，输入自己的玩家名即可查询。<br><br>保存默认对象后，可以直接输入 <code>!i</code>、<code>!p</code>。</div>
+    </aside>
+    <main>
+      <header><div><h1>osu!mania 查询机器人</h1><p>图片面板预览 · Information / Score / Bests / Mapper</p></div><div class="connection" id="qq">QQ 未连接</div></header>
+      <div class="intro"><strong>选一张面板，查看完整数据。</strong><p id="intro-note">点击左侧命令切换预览。点击结果图片可按原始尺寸查看，也可以保存 PNG。</p></div>
+      <div class="messages" id="messages" aria-live="polite"></div>
+      <form id="form"><input id="command" maxlength="300" aria-label="机器人命令" placeholder="输入命令，例如 !p Demo Player" autocomplete="off"><button class="send" id="send">查询 ↗</button></form>
+      <div class="footer"><span>Enter 发送 · 点击图片放大</span><span id="status">LOCAL PREVIEW / v0.4.1</span></div>
+    </main>
+  </div>
+  <dialog id="zoom"><button id="close-zoom">关闭 ×</button><div class="zoom-scroll"><img id="zoom-image" alt="原始尺寸面板"></div></dialog>
+  <script>
+    const messages = document.querySelector('#messages');
+    const input = document.querySelector('#command');
+    let busy = false;
+    let liveMode = false;
+    function addMessage(label, value, user = false, error = false) {
+      if (value?.kind === 'images') {
+        value.images.forEach(image => addMessage(label, { image, demo: value.demo }));
+        return;
+      }
+      const row = document.createElement('div'); row.className = 'message' + (user ? ' user' : '');
+      const heading = document.createElement('div'); heading.className = 'label'; heading.textContent = label;
+      row.append(heading);
+      if (typeof value === 'string') {
+        const bubble = document.createElement('div'); bubble.className = 'bubble' + (error ? ' error' : '');
+        bubble.textContent = value; row.append(bubble);
+      } else if (value.kind === 'audio') {
+        const wrap = document.createElement('div'); wrap.className = 'bubble';
+        const title = document.createElement('div'); title.textContent = value.title;
+        const player = document.createElement('audio'); player.controls = true; player.preload = 'metadata'; player.src = value.url;
+        const save = document.createElement('a'); save.href = value.url; save.download = value.name; save.textContent = '下载完整音频';
+        wrap.append(title, player, document.createElement('br'), save); row.append(wrap);
+      } else {
+        const wrap = document.createElement('div'); wrap.className = 'image-wrap';
+        const img = document.createElement('img'); img.className = 'result-image'; img.src = value.image || value.url; img.alt = '机器人查询结果卡片';
+        img.addEventListener('load', () => { messages.scrollTop = messages.scrollHeight; });
+        img.addEventListener('click', () => { document.querySelector('#zoom-image').src = img.src; document.querySelector('#zoom').showModal(); });
+        wrap.append(img);
+        const note = document.createElement('div'); note.className = 'image-note';
+        const caption = document.createElement('span'); caption.textContent = value.demo ? '演示模式 · 模拟数据 · 点击图片放大' : '真实查询结果 · 点击图片放大'; note.append(caption);
+        if (value.image) { const save = document.createElement('a'); save.href = value.image; save.download = value.image.endsWith('.jpg') ? 'mania-panel.jpg' : 'mania-panel.png'; save.textContent = '保存图片 ↗'; note.append(save); }
+        wrap.append(note); row.append(wrap);
+      }
+      messages.append(row); messages.scrollTop = messages.scrollHeight;
+    }
+    async function query(command) {
+      if (busy || !command.trim()) return;
+      busy = true; document.querySelector('#send').disabled = true;
+      document.querySelector('#status').textContent = '正在查询…';
+      messages.replaceChildren(); addMessage('YOU', command, true); input.value = '';
+      try {
+        const response = await fetch('/api/command', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({command}) });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error);
+        addMessage('MANIA BOT', result.kind === 'text' ? result.text : result);
+      } catch (error) { addMessage('MANIA BOT', error.message || '本地服务连接失败。', false, true); }
+      finally { busy = false; document.querySelector('#send').disabled = false; document.querySelector('#status').textContent = 'LOCAL PREVIEW / v0.4.1'; }
+    }
+    document.querySelector('#form').addEventListener('submit', e => { e.preventDefault(); query(input.value); });
+    document.querySelector('#close-zoom').addEventListener('click', () => document.querySelector('#zoom').close());
+    document.querySelectorAll('.preset').forEach(button => button.addEventListener('click', () => {
+      if (busy) return;
+      if (liveMode && /^!(bind|m|gb)(\s|$)/.test(button.dataset.command)) {
+        input.value = button.dataset.command.split(' ')[0] + ' '; input.focus(); return;
+      }
+      document.querySelectorAll('.preset').forEach(b => b.classList.remove('active')); button.classList.add('active'); query(button.dataset.command);
+    }));
+    fetch('/api/status').then(r => r.json()).then(status => {
+      document.querySelector('#mode').textContent = status.mode === 'demo' ? '● 演示模式 / 模拟数据' : '● 真实数据 / osu! API';
+      document.querySelector('#qq').textContent = status.qqEnabled ? 'QQ 接入已启用 · 连接状态未验证' : '本地运行 · QQ 接入未启用';
+      if (status.mode === 'demo') query('!i Demo Player');
+      else {
+        liveMode = true;
+        document.querySelector('#intro-note').textContent = '已切换真实数据。请在下方输入 !i 你的玩家名，或先用 !bind 绑定。';
+        document.querySelectorAll('.preset').forEach(button => {
+          if (button.dataset.command.includes('Demo Player')) button.dataset.command = button.dataset.command.replace(' Demo Player', '');
+        });
+        addMessage('MANIA BOT', '输入 !i 玩家名 查询真实资料，或 !help 查看命令。');
+      }
+    }).catch(() => { document.querySelector('#mode').textContent = '本地服务连接失败'; });
+  </script>
+</body>
+</html>
+

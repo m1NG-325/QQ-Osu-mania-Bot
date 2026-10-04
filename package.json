@@ -1,0 +1,21 @@
+{
+  "name": "mania-qq-bot",
+  "version": "0.4.1",
+  "license": "AGPL-3.0-only",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env src/server.js",
+    "dan": "node --env-file-if-exists=.env scripts/render-dan.mjs",
+    "test": "node scripts/test.mjs"
+  },
+  "engines": {
+    "node": ">=22.9.0"
+  },
+  "dependencies": {
+    "fflate": "0.8.3",
+    "onnxruntime-common": "1.24.3",
+    "rosu-pp-js": "4.0.1",
+    "sharp": "^0.35.4"
+  }
+}

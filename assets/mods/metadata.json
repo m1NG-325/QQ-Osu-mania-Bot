@@ -1,0 +1,791 @@
+{
+  "DC": {
+    "acronym": "DC",
+    "index": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    "name": "Daycore",
+    "setting_labels": {
+      "speed_change": "Speed decrease"
+    },
+    "type": "DifficultyReduction"
+  },
+  "EZ": {
+    "acronym": "EZ",
+    "index": {
+      "0": 1,
+      "1": 1,
+      "2": 1,
+      "3": 1
+    },
+    "name": "Easy",
+    "setting_labels": {
+      "retries": "Extra Lives"
+    },
+    "type": "DifficultyReduction"
+  },
+  "HT": {
+    "acronym": "HT",
+    "index": {
+      "0": 2,
+      "1": 2,
+      "2": 2,
+      "3": 2
+    },
+    "name": "Half Time",
+    "setting_labels": {
+      "speed_change": "Speed decrease",
+      "adjust_pitch": "Adjust pitch"
+    },
+    "type": "DifficultyReduction"
+  },
+  "NF": {
+    "acronym": "NF",
+    "index": {
+      "0": 3,
+      "1": 3,
+      "2": 3,
+      "3": 3
+    },
+    "name": "No Fail",
+    "setting_labels": {},
+    "type": "DifficultyReduction"
+  },
+  "AC": {
+    "acronym": "AC",
+    "index": {
+      "0": 4,
+      "1": 5,
+      "2": 4,
+      "3": 5
+    },
+    "name": "Accuracy Challenge",
+    "setting_labels": {
+      "minimum_accuracy": "Minimum accuracy",
+      "accuracy_judge_mode": "Accuracy mode",
+      "restart": "Restart on fail"
+    },
+    "type": "DifficultyIncrease"
+  },
+  "BL": {
+    "acronym": "BL",
+    "index": {
+      "0": 5
+    },
+    "name": "Blinds",
+    "setting_labels": {},
+    "type": "DifficultyIncrease"
+  },
+  "DT": {
+    "acronym": "DT",
+    "index": {
+      "0": 6,
+      "1": 6,
+      "2": 5,
+      "3": 7
+    },
+    "name": "Double Time",
+    "setting_labels": {
+      "speed_change": "Speed increase",
+      "adjust_pitch": "Adjust pitch"
+    },
+    "type": "DifficultyIncrease"
+  },
+  "FL": {
+    "acronym": "FL",
+    "index": {
+      "0": 7,
+      "1": 7,
+      "2": 6,
+      "3": 9
+    },
+    "name": "Flashlight",
+    "setting_labels": {
+      "follow_delay": "Follow delay",
+      "size_multiplier": "Flashlight size",
+      "combo_based_size": "Change size based on combo"
+    },
+    "type": "DifficultyIncrease"
+  },
+  "HD": {
+    "acronym": "HD",
+    "index": {
+      "0": 8,
+      "1": 8,
+      "2": 7,
+      "3": 10
+    },
+    "name": "Hidden",
+    "setting_labels": {
+      "only_fade_approach_circles": "Only fade approach circles"
+    },
+    "type": "DifficultyIncrease"
+  },
+  "HR": {
+    "acronym": "HR",
+    "index": {
+      "0": 9,
+      "1": 9,
+      "2": 8,
+      "3": 11
+    },
+    "name": "Hard Rock",
+    "setting_labels": {},
+    "type": "DifficultyIncrease"
+  },
+  "NC": {
+    "acronym": "NC",
+    "index": {
+      "0": 10,
+      "1": 10,
+      "2": 9,
+      "3": 12
+    },
+    "name": "Nightcore",
+    "setting_labels": {
+      "speed_change": "Speed increase"
+    },
+    "type": "DifficultyIncrease"
+  },
+  "PF": {
+    "acronym": "PF",
+    "index": {
+      "0": 11,
+      "1": 11,
+      "2": 10,
+      "3": 13
+    },
+    "name": "Perfect",
+    "setting_labels": {
+      "restart": "Restart on fail",
+      "require_perfect_hits": "Require perfect hits"
+    },
+    "type": "DifficultyIncrease"
+  },
+  "SD": {
+    "acronym": "SD",
+    "index": {
+      "0": 12,
+      "1": 12,
+      "2": 11,
+      "3": 14
+    },
+    "name": "Sudden Death",
+    "setting_labels": {
+      "fail_on_slider_tail": "Also fail when missing a slider tail",
+      "restart": "Restart on fail"
+    },
+    "type": "DifficultyIncrease"
+  },
+  "ST": {
+    "acronym": "ST",
+    "index": {
+      "0": 13
+    },
+    "name": "Strict Tracking",
+    "setting_labels": {},
+    "type": "DifficultyIncrease"
+  },
+  "TC": {
+    "acronym": "TC",
+    "index": {
+      "0": 14
+    },
+    "name": "Traceable",
+    "setting_labels": {},
+    "type": "DifficultyIncrease"
+  },
+  "AL": {
+    "acronym": "AL",
+    "index": {
+      "0": 15
+    },
+    "name": "Alternate",
+    "setting_labels": {},
+    "type": "Conversion"
+  },
+  "CL": {
+    "acronym": "CL",
+    "index": {
+      "0": 16,
+      "1": 13,
+      "2": 12,
+      "3": 25
+    },
+    "name": "Classic",
+    "setting_labels": {
+      "no_slider_head_accuracy": "No slider head accuracy requirement",
+      "classic_note_lock": "Apply classic note lock",
+      "always_play_tail_sample": "Always play a slider's tail sample",
+      "fade_hit_circle_early": "Fade out hit circles earlier",
+      "classic_health": "Classic health"
+    },
+    "type": "Conversion"
+  },
+  "DA": {
+    "acronym": "DA",
+    "index": {
+      "0": 17,
+      "1": 15,
+      "2": 13,
+      "3": 27
+    },
+    "name": "Difficulty Adjust",
+    "setting_labels": {
+      "circle_size": "Circle Size",
+      "approach_rate": "Approach Rate",
+      "drain_rate": "HP Drain",
+      "overall_difficulty": "Accuracy",
+      "extended_limits": "Extended Limits",
+      "scroll_speed": "Scroll Speed",
+      "hard_rock_offsets": "Spicy Patterns"
+    },
+    "type": "Conversion"
+  },
+  "MR": {
+    "acronym": "MR",
+    "index": {
+      "0": 18,
+      "2": 14,
+      "3": 31
+    },
+    "name": "Mirror",
+    "setting_labels": {
+      "reflection": "Flipped axes"
+    },
+    "type": "Conversion"
+  },
+  "RD": {
+    "acronym": "RD",
+    "index": {
+      "0": 19,
+      "1": 16,
+      "3": 32
+    },
+    "name": "Random",
+    "setting_labels": {
+      "angle_sharpness": "Angle sharpness",
+      "seed": "Seed"
+    },
+    "type": "Conversion"
+  },
+  "SG": {
+    "acronym": "SG",
+    "index": {
+      "0": 20,
+      "1": 17
+    },
+    "name": "Single Tap",
+    "setting_labels": {},
+    "type": "Conversion"
+  },
+  "TP": {
+    "acronym": "TP",
+    "index": {
+      "0": 21
+    },
+    "name": "Target Practice",
+    "setting_labels": {
+      "seed": "Seed",
+      "metronome": "Metronome ticks"
+    },
+    "type": "Conversion"
+  },
+  "AP": {
+    "acronym": "AP",
+    "index": {
+      "0": 22
+    },
+    "name": "Autopilot",
+    "setting_labels": {},
+    "type": "Automation"
+  },
+  "AT": {
+    "acronym": "AT",
+    "index": {},
+    "name": "Autoplay",
+    "setting_labels": {},
+    "type": "Automation"
+  },
+  "CN": {
+    "acronym": "CN",
+    "index": {},
+    "name": "Cinema",
+    "setting_labels": {},
+    "type": "Automation"
+  },
+  "RX": {
+    "acronym": "RX",
+    "index": {
+      "0": 25,
+      "1": 21,
+      "2": 17
+    },
+    "name": "Relax",
+    "setting_labels": {},
+    "type": "Automation"
+  },
+  "SO": {
+    "acronym": "SO",
+    "index": {
+      "0": 26
+    },
+    "name": "Spun Out",
+    "setting_labels": {},
+    "type": "Automation"
+  },
+  "AD": {
+    "acronym": "AD",
+    "index": {
+      "0": 27
+    },
+    "name": "Approach Different",
+    "setting_labels": {
+      "scale": "Initial size",
+      "style": "Style"
+    },
+    "type": "Fun"
+  },
+  "AS": {
+    "acronym": "AS",
+    "index": {
+      "0": 28,
+      "1": 22,
+      "3": 35
+    },
+    "name": "Adaptive Speed",
+    "setting_labels": {
+      "initial_rate": "Initial rate",
+      "adjust_pitch": "Adjust pitch"
+    },
+    "type": "Fun"
+  },
+  "BM": {
+    "acronym": "BM",
+    "index": {
+      "0": 29
+    },
+    "name": "Bloom",
+    "setting_labels": {
+      "max_size_combo_count": "Max size at combo",
+      "max_cursor_size": "Final size multiplier"
+    },
+    "type": "Fun"
+  },
+  "BR": {
+    "acronym": "BR",
+    "index": {
+      "0": 30
+    },
+    "name": "Barrel Roll",
+    "setting_labels": {
+      "spin_speed": "Roll speed",
+      "direction": "Direction"
+    },
+    "type": "Fun"
+  },
+  "BU": {
+    "acronym": "BU",
+    "index": {
+      "0": 31
+    },
+    "name": "Bubbles",
+    "setting_labels": {},
+    "type": "Fun"
+  },
+  "DF": {
+    "acronym": "DF",
+    "index": {
+      "0": 32
+    },
+    "name": "Deflate",
+    "setting_labels": {
+      "start_scale": "Starting Size"
+    },
+    "type": "Fun"
+  },
+  "DP": {
+    "acronym": "DP",
+    "index": {
+      "0": 33
+    },
+    "name": "Depth",
+    "setting_labels": {
+      "max_depth": "Maximum depth",
+      "show_approach_circles": "Show Approach Circles"
+    },
+    "type": "Fun"
+  },
+  "FR": {
+    "acronym": "FR",
+    "index": {
+      "0": 34
+    },
+    "name": "Freeze Frame",
+    "setting_labels": {},
+    "type": "Fun"
+  },
+  "GR": {
+    "acronym": "GR",
+    "index": {
+      "0": 35
+    },
+    "name": "Grow",
+    "setting_labels": {
+      "start_scale": "Starting Size"
+    },
+    "type": "Fun"
+  },
+  "MG": {
+    "acronym": "MG",
+    "index": {
+      "0": 36
+    },
+    "name": "Magnetised",
+    "setting_labels": {
+      "attraction_strength": "Attraction strength"
+    },
+    "type": "Fun"
+  },
+  "MU": {
+    "acronym": "MU",
+    "index": {
+      "0": 37,
+      "1": 23,
+      "2": 20,
+      "3": 36
+    },
+    "name": "Muted",
+    "setting_labels": {
+      "inverse_muting": "Start muted",
+      "enable_metronome": "Enable metronome",
+      "mute_combo_count": "Final volume at combo",
+      "affects_hit_sounds": "Mute hit sounds"
+    },
+    "type": "Fun"
+  },
+  "NS": {
+    "acronym": "NS",
+    "index": {
+      "0": 38,
+      "2": 21
+    },
+    "name": "No Scope",
+    "setting_labels": {
+      "hidden_combo_count": "Hidden at combo"
+    },
+    "type": "Fun"
+  },
+  "RP": {
+    "acronym": "RP",
+    "index": {
+      "0": 39
+    },
+    "name": "Repel",
+    "setting_labels": {
+      "repulsion_strength": "Repulsion strength"
+    },
+    "type": "Fun"
+  },
+  "SI": {
+    "acronym": "SI",
+    "index": {
+      "0": 40
+    },
+    "name": "Spin In",
+    "setting_labels": {},
+    "type": "Fun"
+  },
+  "SY": {
+    "acronym": "SY",
+    "index": {
+      "0": 41,
+      "2": 22
+    },
+    "name": "Synesthesia",
+    "setting_labels": {},
+    "type": "Fun"
+  },
+  "TR": {
+    "acronym": "TR",
+    "index": {
+      "0": 42
+    },
+    "name": "Transform",
+    "setting_labels": {},
+    "type": "Fun"
+  },
+  "WD": {
+    "acronym": "WD",
+    "index": {
+      "0": 43,
+      "1": 24,
+      "2": 23,
+      "3": 37
+    },
+    "name": "Wind Down",
+    "setting_labels": {
+      "initial_rate": "Initial rate",
+      "final_rate": "Final rate",
+      "adjust_pitch": "Adjust pitch"
+    },
+    "type": "Fun"
+  },
+  "WG": {
+    "acronym": "WG",
+    "index": {
+      "0": 44
+    },
+    "name": "Wiggle",
+    "setting_labels": {
+      "strength": "Strength"
+    },
+    "type": "Fun"
+  },
+  "WU": {
+    "acronym": "WU",
+    "index": {
+      "0": 45,
+      "1": 25,
+      "2": 24,
+      "3": 38
+    },
+    "name": "Wind Up",
+    "setting_labels": {
+      "initial_rate": "Initial rate",
+      "final_rate": "Final rate",
+      "adjust_pitch": "Adjust pitch"
+    },
+    "type": "Fun"
+  },
+  "SV2": {
+    "acronym": "SV2",
+    "index": {},
+    "name": "Score V2",
+    "setting_labels": {},
+    "type": "System"
+  },
+  "TD": {
+    "acronym": "TD",
+    "index": {
+      "0": 47
+    },
+    "name": "Touch Device",
+    "setting_labels": {},
+    "type": "System"
+  },
+  "SR": {
+    "acronym": "SR",
+    "index": {
+      "1": 4
+    },
+    "name": "Simplified Rhythm",
+    "setting_labels": {
+      "one_third_conversion": "1/3 to 1/2 conversion",
+      "one_sixth_conversion": "1/6 to 1/4 conversion",
+      "one_eighth_conversion": "1/8 to 1/4 conversion"
+    },
+    "type": "DifficultyReduction"
+  },
+  "CS": {
+    "acronym": "CS",
+    "index": {
+      "1": 14,
+      "3": 26
+    },
+    "name": "Constant Speed",
+    "setting_labels": {},
+    "type": "Conversion"
+  },
+  "SW": {
+    "acronym": "SW",
+    "index": {
+      "1": 18
+    },
+    "name": "Swap",
+    "setting_labels": {},
+    "type": "Conversion"
+  },
+  "FF": {
+    "acronym": "FF",
+    "index": {
+      "2": 18
+    },
+    "name": "Floating Fruits",
+    "setting_labels": {},
+    "type": "Fun"
+  },
+  "MF": {
+    "acronym": "MF",
+    "index": {
+      "2": 19
+    },
+    "name": "Moving Fast",
+    "setting_labels": {},
+    "type": "Fun"
+  },
+  "NR": {
+    "acronym": "NR",
+    "index": {
+      "3": 4
+    },
+    "name": "No Release",
+    "setting_labels": {},
+    "type": "DifficultyReduction"
+  },
+  "CO": {
+    "acronym": "CO",
+    "index": {
+      "3": 6
+    },
+    "name": "Cover",
+    "setting_labels": {
+      "coverage": "Coverage",
+      "direction": "Direction"
+    },
+    "type": "DifficultyIncrease"
+  },
+  "FI": {
+    "acronym": "FI",
+    "index": {
+      "3": 8
+    },
+    "name": "Fade In",
+    "setting_labels": {},
+    "type": "DifficultyIncrease"
+  },
+  "1K": {
+    "acronym": "1K",
+    "index": {
+      "3": 15
+    },
+    "name": "One Key",
+    "setting_labels": {},
+    "type": "Conversion"
+  },
+  "2K": {
+    "acronym": "2K",
+    "index": {
+      "3": 16
+    },
+    "name": "Two Keys",
+    "setting_labels": {},
+    "type": "Conversion"
+  },
+  "3K": {
+    "acronym": "3K",
+    "index": {
+      "3": 17
+    },
+    "name": "Three Keys",
+    "setting_labels": {},
+    "type": "Conversion"
+  },
+  "4K": {
+    "acronym": "4K",
+    "index": {
+      "3": 18
+    },
+    "name": "Four Keys",
+    "setting_labels": {},
+    "type": "Conversion"
+  },
+  "5K": {
+    "acronym": "5K",
+    "index": {
+      "3": 19
+    },
+    "name": "Five Keys",
+    "setting_labels": {},
+    "type": "Conversion"
+  },
+  "6K": {
+    "acronym": "6K",
+    "index": {
+      "3": 20
+    },
+    "name": "Six Keys",
+    "setting_labels": {},
+    "type": "Conversion"
+  },
+  "7K": {
+    "acronym": "7K",
+    "index": {
+      "3": 21
+    },
+    "name": "Seven Keys",
+    "setting_labels": {},
+    "type": "Conversion"
+  },
+  "8K": {
+    "acronym": "8K",
+    "index": {
+      "3": 22
+    },
+    "name": "Eight Keys",
+    "setting_labels": {},
+    "type": "Conversion"
+  },
+  "9K": {
+    "acronym": "9K",
+    "index": {
+      "3": 23
+    },
+    "name": "Nine Keys",
+    "setting_labels": {},
+    "type": "Conversion"
+  },
+  "10K": {
+    "acronym": "10K",
+    "index": {
+      "3": 24
+    },
+    "name": "Ten Keys",
+    "setting_labels": {},
+    "type": "Conversion"
+  },
+  "DS": {
+    "acronym": "DS",
+    "index": {
+      "3": 28
+    },
+    "name": "Dual Stages",
+    "setting_labels": {},
+    "type": "Conversion"
+  },
+  "HO": {
+    "acronym": "HO",
+    "index": {
+      "3": 29
+    },
+    "name": "Hold Off",
+    "setting_labels": {},
+    "type": "Conversion"
+  },
+  "IN": {
+    "acronym": "IN",
+    "index": {
+      "3": 30
+    },
+    "name": "Invert",
+    "setting_labels": {},
+    "type": "Conversion"
+  },
+  "V2": {
+    "acronym": "V2",
+    "index": {},
+    "name": "Score V2",
+    "setting_labels": {},
+    "type": "System"
+  },
+  "NM": {
+    "acronym": "NM",
+    "index": {},
+    "name": "No Mod",
+    "setting_labels": {},
+    "type": "System"
+  }
+}

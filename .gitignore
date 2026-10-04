@@ -1,0 +1,15 @@
+node_modules/
+.env
+.env.*
+!.env.example
+data/
+output/
+.npm-cache/
+backups/
+candidate-*/
+*.log
+*.bak
+*.bak[0-9]
+test/fixtures/private/
+*.local.*
+__pycache__/
