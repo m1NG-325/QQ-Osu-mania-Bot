@@ -688,8 +688,8 @@
     },
     {
       "path": "RELEASE_NOTES.md",
-      "bytes": 5374,
-      "sha256": "7c60527d8f5e5d4a5275aee119ce180dabdf7537600a9a6806e4b537c72152cc"
+      "bytes": 5661,
+      "sha256": "a29280aea990a6ea260238b2634958bd1fe519c9c8837e88ea3dc074b25ef503"
     },
     {
       "path": "scripts/export-demo.js",
@@ -1033,8 +1033,8 @@
     },
     {
       "path": "test/server.test.js",
-      "bytes": 8117,
-      "sha256": "ac8fdb65f23f8d945c823d7580f76975ebe7258146250d4966b9231333969898"
+      "bytes": 8408,
+      "sha256": "9517a363ee497fa6bc1ad1f77635f11d9118d5d3c5d0628dc4f95a14ce08113d"
     },
     {
       "path": "test/time-best.test.js",

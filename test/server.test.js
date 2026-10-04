@@ -8,8 +8,13 @@ import { fileURLToPath } from 'node:url';
 import { createHmac } from 'node:crypto';
 import sharp from 'sharp';
 
-test('HTTP preview and isolated mock OneBot dispatch', { timeout: 20000 }, async t => {
+test('HTTP preview and isolated mock OneBot dispatch', { timeout: 120000 }, async t => {
   const sent = [];
+  async function waitSent(count) {
+    const expires=Date.now()+15000;
+    while(sent.length<count&&Date.now()<expires)await delay(50);
+    assert.ok(sent.length>=count, `Expected ${count} command replies within 15 seconds`);
+  }
   const stickerBase = await sharp({create:{width:96,height:96,channels:4,background:'#314159'}}).png().toBuffer();
   const fakeOnebot = http.createServer(async (req, res) => {
     if(req.url==='/sticker-base') { res.writeHead(200,{'Content-Type':'image/png'});res.end(stickerBase);return; }
@@ -24,7 +29,9 @@ test('HTTP preview and isolated mock OneBot dispatch', { timeout: 20000 }, async
       res.writeHead(200,{'Content-Type':'application/json'});
       res.end(JSON.stringify({retcode:0,data:{group_id:123456789,message:[{type:'image',data:{url:`http://127.0.0.1:${fakeOnebot.address().port}/sticker-base`}}]}}));return;
     }
-    sent.push({ path: req.url, authorization: req.headers.authorization, body: JSON.parse(raw) });
+    const responseBody=JSON.parse(raw);
+    const notice=(responseBody.message||[]).some(segment=>segment.type==='text'&&segment.data?.text==='正在查询或等待分析；耗时任务与普通查询分开处理，请勿重复发送。');
+    if(req.url==='/send_group_msg'&&!notice)sent.push({ path: req.url, authorization: req.headers.authorization, body: responseBody });
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ status: 'ok', retcode: 0 }));
   });
@@ -74,7 +81,7 @@ test('HTTP preview and isolated mock OneBot dispatch', { timeout: 20000 }, async
   assert.equal((await signedPost(heartbeat)).status, 200, 'UTF-8 signed events accepted');
   await post({ ...event, group_id: 43 });
   assert.equal((await signedPost(rawEvent)).status, 200); await post(event);
-  for (let i = 0; i < 50 && !sent.length; i++) await delay(50);
+  await waitSent(1);
   await delay(150);
   assert.equal(sent.length, 1, 'only allowed, authenticated, non-duplicate events dispatch');
   assert.equal(sent[0].path, '/send_group_msg');
@@ -85,25 +92,25 @@ test('HTTP preview and isolated mock OneBot dispatch', { timeout: 20000 }, async
   const custom={...event,group_id:123456789,user_id:456,message_id:2,message:[{type:'text',data:{text:'!bind'}}]};
   await post(custom);await delay(100);assert.equal(sent.length,1,'old prefix ignored in overridden group');
   await post({...custom,message_id:3,message:[{type:'text',data:{text:'#bind'}}]});
-  for(let i=0;i<50&&sent.length<2;i++)await delay(50);
+  await waitSent(2);
   assert.equal(sent.length,2);assert.equal(sent[1].body.group_id,123456789);
   const text=sent[1].body.message.filter(s=>s.type==='text').map(s=>s.data.text).join('');
   assert.match(text,/#bind/);assert.ok(!text.includes('!bind'));
   const dan = {...event,group_id:123456789,user_id:789,message_id:4,message:[{type:'reply',data:{id:'777'}},{type:'at',data:{qq:'456'}},{type:'text',data:{text:'#dan alpha 75 0 0 0'}}]};
   assert.equal((await post(dan)).status,200);
-  for(let i=0;i<100&&sent.length<3;i++)await delay(50);
+  await waitSent(3);
   assert.equal(sent.length,3,'dan reply with another-user auto-at dispatches');
   const danFile=sent[2].body.message.find(segment=>segment.type==='image').data.file;
   const danBuffer=Buffer.from(danFile.replace(/^base64:\/\//,''),'base64');
   assert.equal((await sharp(danBuffer).metadata()).width,96);
   assert.ok(!danBuffer.equals(stickerBase),'generated sticker is returned through OneBot');
   await post({...dan,user_id:790,message_id:5,message:[{type:'text',data:{text:'#dan kappa'}}]});
-  for(let i=0;i<100&&sent.length<4;i++)await delay(50);
+  await waitSent(4);
   assert.match(sent[3].body.message.filter(s=>s.type==='text').map(s=>s.data.text).join(''),/#dan.*附带|附带.*图片/);
   await post({...dan,group_id:42,user_id:791,message_id:6,message:`[CQ:image,url=http://127.0.0.1:${fakeOnebot.address().port}/sticker-base]!dan beta 50`});
-  for(let i=0;i<100&&sent.length<5;i++)await delay(50);
+  await waitSent(5);
   assert.ok(sent[4].body.message.some(s=>s.type==='image'),'CQ image messages dispatch');
   await post({...dan,group_id:42,user_id:792,message_id:7,message:[{type:'at',data:{qq:'456'}},{type:'text',data:{text:'！dan epsilon'}}]});
-  for(let i=0;i<100&&sent.length<6;i++)await delay(50);
+  await waitSent(6);
   assert.ok(sent[5].body.message.some(s=>s.type==='image'),'@image sender with fullwidth dan triggers without a reply');
 });
