@@ -7,6 +7,11 @@
       "sha256": "0554697db32be80936e937daffa63c7e66155006e43f6ce1231d67632680bd77"
     },
     {
+      "path": ".gitattributes",
+      "bytes": 80,
+      "sha256": "83acd351c83e2ccefbc4820eb7376f04d15b99451e5460fb6a887a43b593a921"
+    },
+    {
       "path": ".github/workflows/test.yml",
       "bytes": 730,
       "sha256": "0180efbed46ccec7a57e330b22b8219875466fc057f9e13c7741394244b5e9e6"
@@ -683,8 +688,8 @@
     },
     {
       "path": "RELEASE_NOTES.md",
-      "bytes": 5165,
-      "sha256": "3a2678ae0c46e4d2947fb7bf43b0ca3b27aad092361719a405edf6ad383d2aeb"
+      "bytes": 5374,
+      "sha256": "7c60527d8f5e5d4a5275aee119ce180dabdf7537600a9a6806e4b537c72152cc"
     },
     {
       "path": "scripts/export-demo.js",
@@ -708,8 +713,8 @@
     },
     {
       "path": "scripts/verify-release.mjs",
-      "bytes": 3070,
-      "sha256": "6c12ab1c955c2d8e2bf907c2570977dd0e971bd9e215cb8118a69a8b089624af"
+      "bytes": 3087,
+      "sha256": "eed3491f46129315a0ca803e27d8742759caac4df5ed4f5b4746ae0efbe9e63f"
     },
     {
       "path": "src/analysis-worker.js",

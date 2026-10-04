@@ -5,7 +5,7 @@ import {join,relative} from 'node:path';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const ignored=new Set(['.git','node_modules','data','output','.npm-cache','backups','__pycache__']);
 const folders=new Set(['src','test','scripts','public','vendor','assets','.github']);
-const rootFiles=new Set(['.gitignore','.env.example','package.json','package-lock.json','README.md','USAGE.md','LICENSE','THIRD_PARTY_NOTICES.md','RELEASE_NOTES.md','RELEASE_MANIFEST.json','start.ps1','start-napcat.bat']);
+const rootFiles=new Set(['.gitattributes','.gitignore','.env.example','package.json','package-lock.json','README.md','USAGE.md','LICENSE','THIRD_PARTY_NOTICES.md','RELEASE_NOTES.md','RELEASE_MANIFEST.json','start.ps1','start-napcat.bat']);
 const files=[],excluded=[];
 async function walk(dir){
   for(const entry of await readdir(dir,{withFileTypes:true})){
