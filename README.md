@@ -1,8 +1,10 @@
 # osu!mania QQ 查询机器人
 
+[English usage and configuration guide](README.en.md)
+
 第一次使用请阅读 [使用说明](USAGE.md)：安装、QQ 接入、群友指令、dan 参数和常见问题。
 
-Node.js 机器人，通过 NapCat / OneBot 11 在 QQ 群查询 osu!mania 资料、成绩和谱面，生成图片卡片。当前版本 **0.4.1**。可先使用本地演示，无需 QQ 或 API 凭据。
+Node.js 机器人，通过 NapCat / OneBot 11 在 QQ 群查询 osu!mania 资料、成绩和谱面，生成图片卡片。当前版本 **1.0.0**。可先使用本地演示，无需 QQ 或 API 凭据。
 
 ## 安装与运行
 
@@ -139,3 +141,39 @@ node --env-file-if-exists=.env scripts/render-dan.mjs '！dan kappa 75' '底图.
 已验证：静态 PNG／WebP、GIF／动画 WebP、图片下载限制、参数错误、缓存复用，以及模拟 OneBot 的回复选图、自动 @、自定义群命令头、CQ 附图与图片回传。
 
 
+
+## 英文缩写命令
+
+原命令全部保留，英文缩写不区分大小写，并沿用本群命令头。缩写与原命令使用相同参数，成绩序号、范围和条数写法也相同。
+
+| 原命令 | 英文缩写 |
+|---|---|
+| `我的成绩` | `ms` |
+| `随机` | `rnd` |
+| `练习` | `pr` |
+| `群榜` | `lb` |
+| `谱包` | `mp` |
+| `对比` | `cmp` |
+| `周报` | `wr` |
+| `月报` | `mr` |
+| `记录` | `rec` |
+| `状态` | `st` |
+| `推荐` | `rc` |
+| `bind` | `b` |
+| `unbind` | `ub` |
+| `help` | `h` |
+| `audio` | `au` |
+| `i` | `ui` |
+| `o` | `av` |
+| `p` | `rs` |
+| `ps` | `rsl` |
+| `bp` | `bs` |
+| `tbp` | `rb` |
+| `im` | `mi` |
+| `m` | `bm` |
+| `a` | `an` |
+| `v` | `pv` |
+| `gb` | `bg` |
+| `dan` | `dn` |
+
+示例：`！cmp playerA （Player B）`、`！ms 谱面ID`、`！rsl 10-30 playerA`、`！bs#2 playerA`、`！rec on / off`、`@群友 ！dn epsilon`。使用 `#` 的群替换开头命令头。

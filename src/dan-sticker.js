@@ -1,3 +1,4 @@
+import { normalizeCommand } from './command-aliases.js';
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { readFile, stat } from 'node:fs/promises';
@@ -13,7 +14,7 @@ const MAX_BYTES = 20 * 1024 * 1024;
 export const stickerLane = new Lane(1, 8);
 export const DAN_HELP = '用法：!dan <段位> [大小] [色散] [切片] [块状]\n回复图片／动画表情、随指令附图，或 @发图的人使用他最近发的图片。\n例如：@群友 !dan epsilon / !dan kappa 75 / !dan 4kln3 60\n大小 50–125，默认 75；效果 0–1 或 0–100。指定任一效果后，其余默认为 0。';
 
-export function isDanCommand(text) { return /^\s*[!！]\s*dan/i.test(text || ''); }
+export function isDanCommand(text) { return /^\s*[!！]\s*dan/i.test(normalizeCommand(text)); }
 
 const decodeCQ = value => value.replace(/&#91;/g, '[').replace(/&#93;/g, ']').replace(/&#44;/g, ',').replace(/&amp;/g, '&');
 export function messageSegments(message) {
@@ -155,7 +156,7 @@ export class DanService {
   }
   async render(text, buffer) {
     const { url, token } = await this.start();
-    const endpoint = new URL('/cmd', url); endpoint.searchParams.set('text', text);
+    const endpoint = new URL('/cmd', url); endpoint.searchParams.set('text', normalizeCommand(text));
     try {
       const response = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/octet-stream', 'X-Dan-Token': token }, body: buffer, signal: AbortSignal.timeout(90000) });
       if (!response.ok) throw new UserError((await response.text()).slice(0, 1000).trim() || 'dan 合成失败。');
@@ -175,7 +176,7 @@ export class DanService {
 }
 
 export async function handleDanMessage(event, command, { call = onebotCall, service, fetcher = fetch } = {}) {
-  if (/^\s*[!！]\s*dan\s*$/i.test(command)) return { kind: 'text', text: DAN_HELP };
+  if (/^\s*[!！]\s*dan\s*$/i.test(normalizeCommand(command))) return { kind: 'text', text: DAN_HELP };
   return stickerLane.run(async () => {
     const image = await pickDanImage(event, call);
     if (!image) throw new UserError('请随 !dan 指令附带图片／动画表情，或回复一张图片。');

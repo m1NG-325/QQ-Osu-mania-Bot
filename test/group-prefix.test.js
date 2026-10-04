@@ -26,7 +26,7 @@ test('help is common to all groups while error examples keep the active prefix',
   assert.deepEqual(help,prefixReply(original,'！'));
   assert.deepEqual(help,prefixReply(original));
   const svg=cardSvg(help);
-  assert.ok(svg.includes('！bind'));assert.ok(svg.includes('！对比 playerA （Player B）'));
+  assert.ok(svg.includes('！bind'));assert.ok(svg.includes('！对比 / ！cmp playerA （Player B）'));
   assert.ok(svg.includes('命令头为 # 的群'));assert.ok(!svg.includes('本群命令头'));
   assert.ok(svg.includes('dan 使用说明与可调参数'));
   assert.equal(help.notes.filter(note=>note.startsWith('dan')).length,0);

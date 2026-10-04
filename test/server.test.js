@@ -110,7 +110,7 @@ test('HTTP preview and isolated mock OneBot dispatch', { timeout: 120000 }, asyn
   await post({...dan,group_id:42,user_id:791,message_id:6,message:`[CQ:image,url=http://127.0.0.1:${fakeOnebot.address().port}/sticker-base]!dan beta 50`});
   await waitSent(5);
   assert.ok(sent[4].body.message.some(s=>s.type==='image'),'CQ image messages dispatch');
-  await post({...dan,group_id:42,user_id:792,message_id:7,message:[{type:'at',data:{qq:'456'}},{type:'text',data:{text:'！dan epsilon'}}]});
+  await post({...dan,group_id:42,user_id:792,message_id:7,message:[{type:'at',data:{qq:'456'}},{type:'text',data:{text:'！dn epsilon'}}]});
   await waitSent(6);
   assert.ok(sent[5].body.message.some(s=>s.type==='image'),'@image sender with fullwidth dan triggers without a reply');
 });

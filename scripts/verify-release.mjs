@@ -5,7 +5,7 @@ import {join,relative} from 'node:path';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const ignored=new Set(['.git','node_modules','data','output','.npm-cache','backups','__pycache__']);
 const folders=new Set(['src','test','scripts','public','vendor','assets','.github']);
-const rootFiles=new Set(['.gitattributes','.gitignore','.env.example','package.json','package-lock.json','README.md','USAGE.md','LICENSE','THIRD_PARTY_NOTICES.md','RELEASE_NOTES.md','RELEASE_MANIFEST.json','start.ps1','start-napcat.bat']);
+const rootFiles=new Set(['.gitattributes','.gitignore','.env.example','package.json','package-lock.json','README.md','README.en.md','USAGE.md','LICENSE','THIRD_PARTY_NOTICES.md','RELEASE_NOTES.md','RELEASE_MANIFEST.json','start.ps1','start-napcat.bat']);
 const files=[],excluded=[];
 async function walk(dir){
   for(const entry of await readdir(dir,{withFileTypes:true})){
@@ -20,7 +20,8 @@ async function walk(dir){
   }
 }
 await walk(root);files.sort((a,b)=>a.path.localeCompare(b.path,'en'));
-if(process.argv.includes('--clean')&&excluded.length)throw new Error('Clean upload directory contains excluded entries: '+excluded.join(', '));
+const runtimeEntries=excluded.filter(name=>name!=='.git');
+if(process.argv.includes('--clean')&&runtimeEntries.length)throw new Error('Clean upload directory contains excluded entries: '+runtimeEntries.join(', '));
 const pkg=JSON.parse(await readFile(join(root,'package.json'),'utf8')),lock=JSON.parse(await readFile(join(root,'package-lock.json'),'utf8'));
 if(pkg.version!==lock.version||pkg.version!==lock.packages[''].version)throw new Error('Package versions differ');
 if(pkg.dependencies.fflate!=='0.8.3'||lock.packages['node_modules/fflate'].version!=='0.8.3')throw new Error('Unexpected ZIP dependency version');

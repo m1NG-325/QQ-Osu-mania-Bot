@@ -1,3 +1,4 @@
+import { shortcutLabel } from './command-aliases.js';
 export function helpContent(demo=false) {
   const players=[
     ['!我的成绩 谱面ID [玩家名]','最多显示 20 条保留成绩、Mods 和最高分；默认查自己'],
@@ -18,20 +19,21 @@ export function helpContent(demo=false) {
   ];
   if(demo) players.push(['!im [玩家名 / ID]','谱师统计面板，仅演示模式可用']);
   const maps=[
-    ['!dan 段位 [大小] [色散] [切片] [块状]','回复／附图，或 @发图的群友；例：!dan epsilon'],
+    ['!dan 段位 [参数]','回复／附图，或 @发图的群友；例：!dan epsilon'],
     ['!随机 4k 5-6星','可加 60-180秒 LN0-20%；支持 4k / 7k'],
     ['!练习 jack [4k] [5-6星]','键型练习：jack / stream / tech / jhs / ln'],
     ['!谱包 谱面ID','同一谱包的所有难度、键数与下载链接'],
     ['!m 谱面ID / 链接','谱面信息、物件统计、密度与四档 PP 估算'],
     ['!a 谱面ID / 链接 [倍速]','详细谱面分析；倍速 0.5–2.0，默认 1.0'],
-    ['!v谱面ID [时间段] [倍率] [放大] [sv]','例：!v5069028 0:30-1:00 x1.5 z2 sv'],
+    ['!v 谱面ID [时间段] [倍率] [放大] [sv]','例：!v5069028 0:30-1:00 x1.5 z2 sv'],
     ['!推荐 [玩家名 / ID]','对比相近玩家推荐 6 张谱面，附提升方向与加权 PP 收益'],
     ['!gb 谱面ID / 链接','获取该谱面的完整背景图'],
-    ['!au 谱面ID / 链接','获取该难度使用的完整音频，发送为群文件'],
+    ['!audio 谱面ID / 链接','获取该难度使用的完整音频，发送为群文件'],
     ['!help','查看这张命令指南']
   ];
   const bindings=[['!bind 玩家名 / ID','绑定自己的默认查询玩家'],['!bind','查看当前绑定'],['!unbind','解除自己的绑定']];
   const notes=[
+    '英文缩写与原命令等效，英文命令不区分大小写；记录可用 !rec on / !rec off。',
     '群里直接发送命令即可，无需 @；每人发送间隔至少 3 秒。',
     '方括号表示可选参数，不需要输入括号；省略玩家时使用自己的绑定。',
     '示例统一使用 ！；命令头为 # 的群请把开头换成 #，其他群兼容半角 !。',
@@ -39,7 +41,7 @@ export function helpContent(demo=false) {
     '序号从 1 开始；最近成绩包含未通过，可查条数以 osu! API 返回为准。'
   ];
   const dan=[
-    '指令：!dan <段位> [大小] [色散] [切片] [块状]；方括号参数可省略。',
+    '指令：!dan / !dn <段位> [大小] [色散] [切片] [块状]；方括号参数可省略。',
     '选图：回复／附带图片，或 @发图者；按回复 → 附图 → 被 @群友最近 50 条消息中的最新图片选取。',
     '4k 段位：数字 1–10 或 alpha–kappa；4kln 为 1–17。例：epsilon / 4kln3。',
     '7k / 7kln 段位：数字 0–10 或 gamma / azimuth / zenith / stellium；支持模糊拼写。',
@@ -58,14 +60,14 @@ export function helpContent(demo=false) {
     '谱面预览 SV：轨道旁蓝色表示减速、金色表示加速，下方为倍率范围；音符仍按拍数等距显示。',
     '数据来源：PP、排名与成绩取自 osu! API；谱面分析与段位贡献为本地估算。',
     '算法：Sunny；4K 使用混合估算与 Etterna 0.74.0；7K 使用 Sunny 米图 / LN 档位表。',
-    '实现版本：v0.4.1；Sunny 为分析算法，估算结果不等同于官方认证段位。',
+    '实现版本：v1.0.0；Sunny 为分析算法，估算结果不等同于官方认证段位。',
     '分类依据：7K 的 LN 比例 ≥ 37.5% 使用 LN 表；4K 的 LN 比例 ≥ 70% 不评估米图贡献。',
     '准确率口径：Dan ACC 使用 Stable 的 300 权重；与成绩卡显示的准确率可能不同。',
     '评估限制：准确率过低、特殊谱面或不支持的 Mods 会隐藏贡献；4K LN 暂无独立贡献。',
     '异常回退：API 准确率为零但判定有效时补算；不会据此改算官方 PP 或排名。'
   ];
   const common = text => text.replace(/(^|[\s（(：:；;、→])!(?=[A-Za-z\u4e00-\u9fff])/g, '$1！');
-  const rows = values => values.map(row => row.map(common));
+  const rows = values => values.map(([command,description]) => [common(shortcutLabel(command)),common(description)]);
   return {players:rows(players),maps:rows(maps),bindings:rows(bindings),notes:notes.map(common),dan:dan.map(common),algorithms,commandPrefix:'！'};
 }
 

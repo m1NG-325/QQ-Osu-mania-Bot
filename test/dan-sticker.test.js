@@ -65,7 +65,7 @@ test('actual Python service renders PNG, WebP and animated GIF with cache and er
   const service = new DanService({ cacheDir: directory });
   t.after(async () => { service.close(); await rm(directory, { recursive: true, force: true }); });
   const base = await sharp({ create: { width: 160, height: 100, channels: 4, background: '#1a2438' } }).png().toBuffer();
-  const png = await service.render('!dan alpha 75 0 0 0', base);
+  const png = await service.render('!dn alpha 75 0 0 0', base);
   assert.equal(png.mime, 'image/png');
   assert.equal((await sharp(png.buffer).metadata()).width, 160);
   assert.ok(!png.buffer.equals(base), 'sticker changes the supplied image');

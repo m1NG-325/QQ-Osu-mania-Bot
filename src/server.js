@@ -34,7 +34,7 @@ const apiCache = new ResultCache({ttl:10000,capacity:64,maxBytes:16*1024*1024});
 if (mode === 'live') { const get = api.get.bind(api); api.get = path => apiCache.get(path, () => get(path)); }
 const queries = new QueryService({bot,bindings,history,cache});
 const run = (command,sender='local',context={}) => isDanCommand(command) ? Promise.resolve({kind:'text',text:DAN_HELP}) : parseCommand(command)?.action==='状态'
-  ? Promise.resolve({kind:'text',text:`osu!mania bot v0.4.1\n运行 ${Math.floor(process.uptime())} 秒\n查询：${queryLane.active}/4，等待 ${queryLane.waiting.length}\n分析：${analysisLane.active}/2，等待 ${analysisLane.waiting.length}\n渲染：${renderLane.active}/2，等待 ${renderLane.waiting.length}\n音频：${downloadLane.active}/1，等待 ${downloadLane.waiting.length}\n记录开关仅影响发起人；可用 !记录 关闭 停止保存。`})
+  ? Promise.resolve({kind:'text',text:`osu!mania bot v1.0.0\n运行 ${Math.floor(process.uptime())} 秒\n查询：${queryLane.active}/4，等待 ${queryLane.waiting.length}\n分析：${analysisLane.active}/2，等待 ${analysisLane.waiting.length}\n渲染：${renderLane.active}/2，等待 ${renderLane.waiting.length}\n音频：${downloadLane.active}/1，等待 ${downloadLane.waiting.length}\n记录开关仅影响发起人；可用 !记录 关闭 停止保存。`})
   : queries.run(command,sender,context);
 const cards = new Map();
 const audioFiles = new Map();
@@ -114,7 +114,7 @@ const server = http.createServer(async (request, response) => {
       return response.end(await readFile(new URL('../public/index.html', import.meta.url)));
     }
     if (request.method === 'GET' && pathname === '/api/status') {
-      return json(response, 200, { mode, qqEnabled, version:'0.4.1', connection, uptime:Math.floor(process.uptime()), rssMB:Math.round(process.memoryUsage().rss/1024/1024), queues:{query:queryLane.status,heavy:heavyLane.status,analysis:analysisLane.status,audio:downloadLane.status,render:renderLane.status,sticker:stickerLane.status},cacheBytes:cache.bytes,imageBytes, bound: Boolean(bindings.get('local')) });
+      return json(response, 200, { mode, qqEnabled, version:'1.0.0', connection, uptime:Math.floor(process.uptime()), rssMB:Math.round(process.memoryUsage().rss/1024/1024), queues:{query:queryLane.status,heavy:heavyLane.status,analysis:analysisLane.status,audio:downloadLane.status,render:renderLane.status,sticker:stickerLane.status},cacheBytes:cache.bytes,imageBytes, bound: Boolean(bindings.get('local')) });
     }
     if (request.method === 'GET' && pathname.startsWith('/audio/')) {
       const audio = audioFiles.get(pathname);
@@ -204,4 +204,4 @@ const server = http.createServer(async (request, response) => {
 });
 server.requestTimeout = 30000;
 server.on('error', error => { logEvent('startup_failed',safeError(error)); console.error(`启动失败：${error.code}`); process.exitCode = 1; });
-server.listen(port, host, () => {logEvent('service_started');console.log(`Mania bot v0.4.1 (${mode}) → http://127.0.0.1:${port}`);});
+server.listen(port, host, () => {logEvent('service_started');console.log(`Mania bot v1.0.0 (${mode}) → http://127.0.0.1:${port}`);});

@@ -1,3 +1,4 @@
+import { normalizeCommand } from './command-aliases.js';
 import { UserError } from './osu.js';
 import { scoreRate } from './analysis.js';
 import { hasMods } from './difficulty.js';
@@ -14,6 +15,9 @@ import {recentScoreCompare} from './score-compare.js';
 export const HELP = helpText(true);
 
 export function parseCommand(text) {
+  text=normalizeCommand(text);
+  const dan=text.match(/^[!！]\s*dan\s*(.*)$/i);
+  if(dan)return {action:'dan',argument:dan[1].trim()};
   const ranged=text.trim().match(/^[!！]\s*(ps|bp)\s*([+-]?\d+(?:\.\d+)?)-([+-]?\d+(?:\.\d+)?)(?:\s+(.*))?$/i);
   if(ranged)return {action:ranged[1].toLowerCase(),argument:(ranged[4]||'').trim(),range:{start:Number(ranged[2]),end:Number(ranged[3])}};
   const counted=text.trim().match(/^[!！]\s*(ps|bp)\s+([^\s]+)条(?:\s+(.*))?$/i);
