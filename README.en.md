@@ -1,4 +1,4 @@
-# QQ Osu!mania Bot — v1.1.1
+# QQ Osu!mania Bot — v1.1.2
 
 [中文 README](README.md) · [中文使用说明](USAGE.md)
 

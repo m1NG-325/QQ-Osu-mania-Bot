@@ -1,5 +1,5 @@
 {
-  "version": "1.1.1",
+  "version": "1.1.2",
   "files": [
     {
       "path": ".env.example",
@@ -759,32 +759,32 @@
     {
       "path": "package-lock.json",
       "bytes": 19506,
-      "sha256": "5a331fa384c5ec514080d60d4dadd9f722aba2d8d631548125c38490115eb869"
+      "sha256": "f5007aae742fd48c00b279bab3c18c8f7aa9e4e06f23cf93cd42a8e7f2178407"
     },
     {
       "path": "package.json",
       "bytes": 481,
-      "sha256": "1c6cd5bb77f9d19d75efadd1e966ba5c9e77c1eda43e3f79ec408fd4d24a24df"
+      "sha256": "39cbaa67bbbeee1323e281025a7aa21b11e2776d70dd5e1183fb47d5fbdbbbb2"
     },
     {
       "path": "public/index.html",
       "bytes": 12060,
-      "sha256": "1fcc5656a84e154eb37670da62eb887df0676ef21164dbc4b0acbeec96dcc54a"
+      "sha256": "e87d60f5ffa5ec4189d391c394fe45815f91c297e8c56de06858051b6fbe2eb7"
     },
     {
       "path": "README.en.md",
       "bytes": 13015,
-      "sha256": "94efa5cf24e4d40cf816074d9e327945b95b8c86d117dcc7c2639a34022ef42c"
+      "sha256": "112c7301689f911d3439952fce81b07fa793894c13f75ad87f12a23c77fa7e4d"
     },
     {
       "path": "README.md",
       "bytes": 12003,
-      "sha256": "bf3bac62653be45f450b65f61f51aa62936ac146fd0e2e9b7115dbcb25febf74"
+      "sha256": "aec866f8d8a28ef43ca70d89a2769f8367ab517a5e6625396c915be81850e550"
     },
     {
       "path": "RELEASE_NOTES.md",
-      "bytes": 458,
-      "sha256": "9813961a0ed239f37e88a8a78a03aed10734f6e1e4737f39da51c2aeeff3a78f"
+      "bytes": 199,
+      "sha256": "7e85a0ba38f169c1feac5fe330d57006bf1921defaed34a6bdfb2aaa5d797670"
     },
     {
       "path": "scripts/export-demo.js",
@@ -883,8 +883,8 @@
     },
     {
       "path": "src/dan-sticker.js",
-      "bytes": 11016,
-      "sha256": "b0e0d66ddfcbfda8939c7c647809cf7541a40eab8080ebaeafe148de144bd169"
+      "bytes": 11043,
+      "sha256": "2fd9a69e5ee19780a0a3acd83d0be5ee4832e660db884b48c8e517daf608326b"
     },
     {
       "path": "src/dan-worker.js",
@@ -939,7 +939,7 @@
     {
       "path": "src/help.js",
       "bytes": 6541,
-      "sha256": "06a935534082cf2649e59e3cb7d6301b96800f11084f261b314fd90452b84816"
+      "sha256": "afa88bd67413c56d380983b31df167d41dedfe248e7da4aa21d29244e1ac1bac"
     },
     {
       "path": "src/history.js",
@@ -1009,7 +1009,7 @@
     {
       "path": "src/server.js",
       "bytes": 13814,
-      "sha256": "a12f2432b3ba04995c63e46cb269a6b89055aa7f102ddd0d8bf0feb69ecee591"
+      "sha256": "2e3470a861312f41a8818a73f8bfc6cadbd8f69d810c3182ca8fa5781a2c4e53"
     },
     {
       "path": "src/seven-rice-gates.js",
@@ -1158,8 +1158,8 @@
     },
     {
       "path": "test/security-boundaries.test.js",
-      "bytes": 2450,
-      "sha256": "c8e85e9d7b6149c44528314ed58df86658b8f98450f4db3ed091f6f95eb68dd1"
+      "bytes": 3213,
+      "sha256": "4f081df7f745245a402b8c813943f187b9c5e9c8ca3ddcdbd0e6c8d4f9a979b3"
     },
     {
       "path": "test/server.test.js",
@@ -1179,7 +1179,7 @@
     {
       "path": "USAGE.md",
       "bytes": 10041,
-      "sha256": "1ac1faa67ba30bf55037fad33eb1c1f4ffc233e7da0e42aab6f92dd5ffb37dc5"
+      "sha256": "099eab98205ace06c503844776e267f7616574ce8b00c2087b274dc8e55cefbd"
     },
     {
       "path": "vendor/dan-sticker/bot.py",

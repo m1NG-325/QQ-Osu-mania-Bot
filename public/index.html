@@ -57,7 +57,7 @@
       <div class="intro"><strong>选一张面板，查看完整数据。</strong><p id="intro-note">点击左侧命令切换预览。点击结果图片可按原始尺寸查看，也可以保存 PNG。</p></div>
       <div class="messages" id="messages" aria-live="polite"></div>
       <form id="form"><input id="command" maxlength="300" aria-label="机器人命令" placeholder="输入命令，例如 !p Demo Player" autocomplete="off"><button class="send" id="send">查询 ↗</button></form>
-      <div class="footer"><span>Enter 发送 · 点击图片放大</span><span id="status">LOCAL PREVIEW / v1.1.1</span></div>
+      <div class="footer"><span>Enter 发送 · 点击图片放大</span><span id="status">LOCAL PREVIEW / v1.1.2</span></div>
     </main>
   </div>
   <dialog id="zoom"><button id="close-zoom">关闭 ×</button><div class="zoom-scroll"><img id="zoom-image" alt="原始尺寸面板"></div></dialog>
@@ -107,7 +107,7 @@
         if (!response.ok) throw new Error(result.error);
         addMessage('MANIA BOT', result.kind === 'text' ? result.text : result);
       } catch (error) { addMessage('MANIA BOT', error.message || '本地服务连接失败。', false, true); }
-      finally { busy = false; document.querySelector('#send').disabled = false; document.querySelector('#status').textContent = 'LOCAL PREVIEW / v1.1.1'; }
+      finally { busy = false; document.querySelector('#send').disabled = false; document.querySelector('#status').textContent = 'LOCAL PREVIEW / v1.1.2'; }
     }
     document.querySelector('#form').addEventListener('submit', e => { e.preventDefault(); query(input.value); });
     document.querySelector('#close-zoom').addEventListener('click', () => document.querySelector('#zoom').close());

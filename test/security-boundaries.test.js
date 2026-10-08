@@ -23,7 +23,7 @@ test('dan downloads block private hosts, deceptive domains and unsafe redirects'
   let calls = 0;
   const fetcher = async () => { calls++; return new Response('x'); };
   for (const url of ['http://127.0.0.1/secret', 'http://169.254.169.254/', 'http://192.168.1.1/',
-    'https://qpic.cn.attacker.test/', 'https://attackerqpic.cn/', 'https://user:pass@gchat.qpic.cn/', 'https://gchat.qpic.cn:8080/']) {
+    'https://qpic.cn.attacker.test/', 'https://multimedia.nt.qq.com.cn.attacker.test/', 'https://attackerqpic.cn/', 'https://user:pass@gchat.qpic.cn/', 'https://gchat.qpic.cn:8080/']) {
     await assert.rejects(downloadDanImage({ data: { url } }, { fetcher }), /QQ 图片/);
   }
   assert.equal(calls, 0);
@@ -41,4 +41,21 @@ test('dan downloads block private hosts, deceptive domains and unsafe redirects'
       : new Response('image')
   });
   assert.equal(image.toString(), 'image');
+});
+
+test('NapCat QQ NT com.cn image URLs work directly and after a validated redirect', async () => {
+  const url = 'https://multimedia.nt.qq.com.cn/download?appid=1407&fileid=synthetic';
+  for (const initial of [url, 'https://gchat.qpic.cn/image']) {
+    const visited = [];
+    const image = await downloadDanImage({ data: { url: initial } }, {
+      fetcher: async (target, options) => {
+        visited.push(target);
+        assert.equal(options.redirect, 'manual');
+        return target === url ? new Response('qq-image')
+          : new Response(null, { status: 302, headers: { location: url } });
+      }
+    });
+    assert.equal(image.toString(), 'qq-image');
+    assert.equal(visited.at(-1), url);
+  }
 });

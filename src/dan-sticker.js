@@ -81,7 +81,7 @@ function qqImageUrl(value) {
   let url;
   try { url = new URL(value); } catch { throw new UserError('无法获取这张图片，请重新发送图片／动画表情后再试。'); }
   const host = url.hostname.toLowerCase();
-  const allowed = ['qpic.cn', 'qlogo.cn', 'multimedia.nt.qq.com'].some(domain => host === domain || host.endsWith('.' + domain));
+  const allowed = ['qpic.cn', 'qlogo.cn', 'multimedia.nt.qq.com', 'multimedia.nt.qq.com.cn'].some(domain => host === domain || host.endsWith('.' + domain));
   if (!allowed || !['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.port)
     throw new UserError('仅支持 QQ 图片地址，请将图片直接发送到群里后再试。');
   return url.href;
