@@ -19,7 +19,10 @@ test('dan triggering, CQ decoding and reply image priority', async () => {
   assert.equal(await pickDanImage(event, call), original);
   assert.equal(await pickDanImage(event, async () => { throw new Error(); }), image);
   assert.equal(await pickDanImage(event, async () => ({ group_id: 99, message: [original] })), image);
-  assert.equal((await pickDanImage({ raw_message: '[CQ:reply,id=123][CQ:image,file=own]' }, async () => ({ message: '[CQ:image,file=reply]' }))).data.file, 'reply');
+  assert.equal((await pickDanImage({ group_id:42, raw_message: '[CQ:reply,id=123][CQ:image,file=own]' }, async () => ({ message: '[CQ:image,file=private]' }))).data.file, 'own');
+  assert.equal((await pickDanImage({ group_id:42, raw_message: '[CQ:reply,id=123]' }, async () => ({ message: '[CQ:image,file=private]' }))), null);
+  assert.equal((await pickDanImage({ group_id:42, raw_message: '[CQ:reply,id=123]' }, async () => ({ group_id:43, message: '[CQ:image,file=other-group]' }))), null);
+  assert.equal((await pickDanImage({ group_id:42, raw_message: '[CQ:reply,id=123]' }, async () => ({ group_id:42, message: '[CQ:image,file=reply]' }))).data.file, 'reply');
 });
 
 test('dan missing input, image resolution and download bounds', async () => {
@@ -27,13 +30,13 @@ test('dan missing input, image resolution and download bounds', async () => {
   await assert.rejects(handleDanMessage({}, '!dan kappa'), /附带图片/);
   let requested;
   const bytes = await downloadDanImage({ data: { file: 'qq-image-id' } }, {
-    call: async (action, args) => { assert.equal(action, 'get_image'); assert.equal(args.file, 'qq-image-id'); return { url: 'https://example.test/image' }; },
+    call: async (action, args) => { assert.equal(action, 'get_image'); assert.equal(args.file, 'qq-image-id'); return { url: 'https://gchat.qpic.cn/image' }; },
     fetcher: async url => { requested = url; return new Response('image'); }
   });
-  assert.equal(requested, 'https://example.test/image'); assert.equal(bytes.toString(), 'image');
+  assert.equal(requested, 'https://gchat.qpic.cn/image'); assert.equal(bytes.toString(), 'image');
   await assert.rejects(downloadDanImage({ data: { url: 'file:///arbitrary' } }), /无法获取/);
-  await assert.rejects(downloadDanImage({ data: { url: 'https://example.test/image' } }, { fetcher: async () => new Response('x', { headers: { 'content-length': String(21 * 1024 * 1024) } }) }), /太大/);
-  await assert.rejects(downloadDanImage({ data: { url: 'https://example.test/image' } }, { fetcher: async () => new Response('expired', { status: 404 }) }), /下载失败/);
+  await assert.rejects(downloadDanImage({ data: { url: 'https://gchat.qpic.cn/image' } }, { fetcher: async () => new Response('x', { headers: { 'content-length': String(21 * 1024 * 1024) } }) }), /太大/);
+  await assert.rejects(downloadDanImage({ data: { url: 'https://gchat.qpic.cn/image' } }, { fetcher: async () => new Response('expired', { status: 404 }) }), /下载失败/);
 });
 
 test('dan @sender picks their newest group image and keeps explicit image priority', async () => {

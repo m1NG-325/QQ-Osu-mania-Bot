@@ -1,3 +1,6 @@
+import { mkdtemp, writeFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import http from 'node:http';
@@ -16,18 +19,27 @@ test('HTTP preview and isolated mock OneBot dispatch', { timeout: 120000 }, asyn
     assert.ok(sent.length>=count, `Expected ${count} command replies within 15 seconds`);
   }
   const stickerBase = await sharp({create:{width:96,height:96,channels:4,background:'#314159'}}).png().toBuffer();
+  const imageDir = await mkdtemp(join(tmpdir(), 'onebot-test-'));
+  const imageFile = join(imageDir, 'image.png');
+  await writeFile(imageFile, stickerBase);
+  t.after(() => rm(imageDir, { recursive: true, force: true }));
   const fakeOnebot = http.createServer(async (req, res) => {
+    if (req.url === '/get_image') {
+      for await (const _chunk of req) {}
+      res.writeHead(200, {'Content-Type':'application/json'});
+      res.end(JSON.stringify({retcode:0,data:{file:imageFile}})); return;
+    }
     if(req.url==='/sticker-base') { res.writeHead(200,{'Content-Type':'image/png'});res.end(stickerBase);return; }
     let raw = ''; for await (const chunk of req) raw += chunk;
     if(req.url==='/get_group_msg_history') {
       const args=JSON.parse(raw);assert.equal(args.count,50);
       res.writeHead(200,{'Content-Type':'application/json'});
-      res.end(JSON.stringify({retcode:0,data:{messages:[{group_id:args.group_id,user_id:456,time:100,message:[{type:'image',data:{url:`http://127.0.0.1:${fakeOnebot.address().port}/sticker-base`}}]}]}}));return;
+      res.end(JSON.stringify({retcode:0,data:{messages:[{group_id:args.group_id,user_id:456,time:100,message:[{type:'image',data:{file:'trusted-image-id'}}]}]}}));return;
     }
     if(req.url==='/get_msg') {
       assert.equal(JSON.parse(raw).message_id, 777);
       res.writeHead(200,{'Content-Type':'application/json'});
-      res.end(JSON.stringify({retcode:0,data:{group_id:123456789,message:[{type:'image',data:{url:`http://127.0.0.1:${fakeOnebot.address().port}/sticker-base`}}]}}));return;
+      res.end(JSON.stringify({retcode:0,data:{group_id:123456789,message:[{type:'image',data:{file:'trusted-image-id'}}]}}));return;
     }
     const responseBody=JSON.parse(raw);
     const notice=(responseBody.message||[]).some(segment=>segment.type==='text'&&segment.data?.text==='正在查询或等待分析；耗时任务与普通查询分开处理，请勿重复发送。');
@@ -109,7 +121,7 @@ test('HTTP preview and isolated mock OneBot dispatch', { timeout: 120000 }, asyn
   assert.match(sent[3].body.message.filter(s=>s.type==='text').map(s=>s.data.text).join(''),/#dan.*附带|附带.*图片/);
   await post({...dan,group_id:42,user_id:791,message_id:6,message:`[CQ:image,url=http://127.0.0.1:${fakeOnebot.address().port}/sticker-base]!dan beta 50`});
   await waitSent(5);
-  assert.ok(sent[4].body.message.some(s=>s.type==='image'),'CQ image messages dispatch');
+  assert.match(sent[4].body.message.filter(s=>s.type==='text').map(s=>s.data.text).join(''), /QQ 图片/, 'untrusted CQ URLs are rejected');
   await post({...dan,group_id:42,user_id:792,message_id:7,message:[{type:'at',data:{qq:'456'}},{type:'text',data:{text:'！dn epsilon'}}]});
   await waitSent(6);
   assert.ok(sent[5].body.message.some(s=>s.type==='image'),'@image sender with fullwidth dan triggers without a reply');

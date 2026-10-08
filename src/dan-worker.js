@@ -1,3 +1,4 @@
+import { validNoteData } from './beatmap-limits.js';
 import { parentPort,workerData } from 'node:worker_threads';
 import { OsuFileParser } from '../vendor/mania-analyser/js/parser/osuFileParser.js';
 import { runMixedEstimatorFromText,applyCompanellaToMixedResult } from '../vendor/mania-analyser/js/estimator/mixedEstimator.js';
@@ -14,7 +15,7 @@ try{
   const {raw,rate,odFlag,starRating}=workerData,parser=new OsuFileParser(raw);parser.process();
   const p=parser.getParsedData();
   if(parser.status!=='OK'||parser.gameMode!=='3'||![4,7].includes(p.columnCount))throw Error('Native 4K/7K charts only');
-  if(!p.noteStarts.length||p.noteStarts.length>50000||p.noteStarts.some(t=>!Number.isFinite(t)||t<0||t>7200000))throw Error('Invalid note data');
+  if(!validNoteData(p))throw Error('Invalid note data');
   if(p.columnCount===7){
     const isLn=p.noteTypes.filter(t=>(t&128)!==0).length/p.noteStarts.length>=.375;
     const reason=sevenRiceExclusion(p,rate,{allowLn:isLn});

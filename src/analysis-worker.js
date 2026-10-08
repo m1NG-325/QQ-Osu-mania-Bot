@@ -1,3 +1,4 @@
+import { validNoteData } from './beatmap-limits.js';
 import { parentPort, workerData } from 'node:worker_threads';
 import { OsuFileParser } from '../vendor/mania-analyser/js/parser/osuFileParser.js';
 import { runSunnyEstimatorFromText } from '../vendor/mania-analyser/js/estimator/sunnyEstimator.js';
@@ -23,7 +24,7 @@ try {
   const p = parser.getParsedData();
   if (!Number.isInteger(p.columnCount) || p.columnCount < 1 || p.columnCount > 10 || !p.noteStarts.length)
     throw new Error('谱面键数或音符数据无效。');
-  if (p.noteStarts.length > 50000 || p.noteStarts.some(t => !Number.isFinite(t) || t < 0 || t > 7200000))
+  if (!validNoteData(p))
     throw new Error('谱面超出分析范围（最多 50000 音符、2 小时）。');
   const options = { speedRate: rate, withGraph: true, enableAnalyzeLN: true };
   const sunny = runSunnyEstimatorFromText(raw, options, parser);

@@ -4,7 +4,7 @@
 
 第一次使用请阅读 [使用说明](USAGE.md)：安装、QQ 接入、群友指令、dan 参数和常见问题。
 
-Node.js 机器人，通过 NapCat / OneBot 11 在 QQ 群查询 osu!mania 资料、成绩和谱面，生成图片卡片。当前版本 **1.1.0**。可先使用本地演示，无需 QQ 或 API 凭据。
+Node.js 机器人，通过 NapCat / OneBot 11 在 QQ 群查询 osu!mania 资料、成绩和谱面，生成图片卡片。当前版本 **1.1.1**。可先使用本地演示，无需 QQ 或 API 凭据。
 
 ## 安装与运行
 

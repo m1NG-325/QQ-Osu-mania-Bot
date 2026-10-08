@@ -37,7 +37,7 @@ export async function pickDanImage(event, call = onebotCall) {
     try {
       const original = await call('get_msg', { message_id: Number(reply.data.id) });
       // Only consume replies from the current group.
-      if (original?.group_id == null || String(original.group_id) === String(event.group_id)) {
+      if (event.group_id != null && original?.group_id != null && String(original.group_id) === String(event.group_id)) {
         const image = firstImage(original?.message ?? original?.raw_message);
         if (image) return image;
       }
@@ -77,6 +77,16 @@ async function boundedBody(response, limit = MAX_BYTES) {
   return Buffer.concat(chunks);
 }
 
+function qqImageUrl(value) {
+  let url;
+  try { url = new URL(value); } catch { throw new UserError('无法获取这张图片，请重新发送图片／动画表情后再试。'); }
+  const host = url.hostname.toLowerCase();
+  const allowed = ['qpic.cn', 'qlogo.cn', 'multimedia.nt.qq.com'].some(domain => host === domain || host.endsWith('.' + domain));
+  if (!allowed || !['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.port)
+    throw new UserError('仅支持 QQ 图片地址，请将图片直接发送到群里后再试。');
+  return url.href;
+}
+
 export async function downloadDanImage(image, { call = onebotCall, fetcher = fetch } = {}) {
   let url = image.data.url;
   if (!url && /^https?:\/\//i.test(image.data.file || '')) url = image.data.file;
@@ -99,7 +109,16 @@ export async function downloadDanImage(image, { call = onebotCall, fetcher = fet
   }
   if (!/^https?:\/\//i.test(url || '')) throw new UserError('无法获取这张图片，请重新发送图片／动画表情后再试。');
   try {
-    const response = await fetcher(url, { signal: AbortSignal.timeout(20000) });
+    url = qqImageUrl(url);
+    const signal = AbortSignal.timeout(20000);
+    let response;
+    for (let redirects = 0; redirects <= 3; redirects++) {
+      response = await fetcher(url, { signal, redirect: 'manual' });
+      if (![301, 302, 303, 307, 308].includes(response.status)) break;
+      await response.body?.cancel();
+      if (redirects === 3 || !response.headers.get('location')) throw new Error('Too many redirects');
+      url = qqImageUrl(new URL(response.headers.get('location'), url).href);
+    }
     if (!response.ok) throw new Error('download failed');
     const buffer = await boundedBody(response);
     if (!buffer.length) throw new UserError('收到的图片为空，请重新发送。');
