@@ -1,4 +1,4 @@
-# QQ Osu!mania Bot — v1.0.0
+# QQ Osu!mania Bot — v1.1.0
 
 [中文 README](README.md) · [中文使用说明](USAGE.md)
 
@@ -174,7 +174,7 @@ Supported inputs: PNG, JPEG, GIF, WebP and BMP, up to 20 MB. GIF animation is re
 
 PP, rankings and scores come from osu!'s API. Missing PP stays unavailable. An `S` grade and the pass flag are separate fields. Local contribution estimates may be omitted for failed plays, unsupported modifiers, missing judgments or excluded chart structures.
 
-Sunny, MSD, official stars and local dan contribution are different metrics. Dan accuracy uses stable's 300-weighted judgments and may differ from lazer's displayed accuracy. The current 7K LN branch uses an LN-object ratio of at least 37.5%; 4K rice contribution is excluded at an LN ratio of at least 70%. These are implementation thresholds, not an official universal definition of an LN map. Full analysis notes and upstream links are in the Chinese README.
+Sunny, MSD, official stars and local dan contribution are different metrics. 4K LN contribution uses ScoreV2 judgment accuracy (MAX 305, great 300): a 97% bar, a 91% minimum and played OD at least 7. RC and 7K LN retain stable's 300-weighted judgments. 4K LN needs at least 45% holds and effective releases at the played rate/OD; tap-length holds can route to RC. 7K LN retains its 37.5% hold threshold. The numeric 4K LN ladder is 1–17. Above-bar credit caps at +0.7 from 99.7%, while 91% costs 1.75 levels. These are implementation thresholds, not an official universal definition of an LN map. Full analysis notes and upstream links are in the Chinese README.
 
 ## Troubleshooting and operation
 

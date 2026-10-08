@@ -1,6 +1,7 @@
 const fourNames=['Alpha','Beta','Gamma','Delta','Epsilon','Zeta','Eta','Theta','Iota','Kappa'];
 const sevenNames=['Gamma','Azimuth','Zenith','Stellium'];
-export function danName(level,keys=4){
+export function danName(level,keys=4,side='Rice'){
+  if(keys===4&&side==='LN')return String(level);
   return level<=10?String(level):(keys===7?sevenNames:fourNames)[level-11];
 }
 export function sevenRiceVerdict(text){

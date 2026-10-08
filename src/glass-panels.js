@@ -180,7 +180,7 @@ function scoreBeatmap(m,rate,assets={}){
     +t(1298,728,'◇ CHART ESTIMATE',16,'#edcd91')+t(1508,728,'● YOUR CREDIT',16,'#8fb9ff')
     +b(1298,779,danValue(d.chart),46,'#edcd91')+t(1459,775,'→',29,'#c3cad7')+b(1508,779,danValue(d.credited),46,'#8fb9ff')
     +t(1298,802,d.label,16,'#c3cad7')+t(1508,802,d.creditedLabel,16,'#c3cad7')
-    +t(1298,829,d.reason?cut(d.reason,49):`Dan ACC (Stable) ${f(d.accuracy*100,2)}% · Bar ${f((d.bar??.96)*100)}%`,16,d.reason?'#f78e9c':'#c3cad7')+metadata;
+    +t(1298,829,d.reason?cut(d.reason,49):`Dan ACC (${d.currency||'Stable'}) ${f(d.accuracy*100,2)}% · Bar ${f((d.bar??.96)*100)}%`,16,d.reason?'#f78e9c':'#c3cad7')+metadata;
   if(d.credited!=null){
     const {lower,upper,levels}=danScale(d.chart,d.keys,d.side),pos=v=>807-(v-lower)/(upper-lower)*86;
     out+=`<path d="M1650 715v113" stroke="#fff" stroke-opacity=".1"/>`;

@@ -4,7 +4,7 @@
 
 第一次使用请阅读 [使用说明](USAGE.md)：安装、QQ 接入、群友指令、dan 参数和常见问题。
 
-Node.js 机器人，通过 NapCat / OneBot 11 在 QQ 群查询 osu!mania 资料、成绩和谱面，生成图片卡片。当前版本 **1.0.0**。可先使用本地演示，无需 QQ 或 API 凭据。
+Node.js 机器人，通过 NapCat / OneBot 11 在 QQ 群查询 osu!mania 资料、成绩和谱面，生成图片卡片。当前版本 **1.1.0**。可先使用本地演示，无需 QQ 或 API 凭据。
 
 ## 安装与运行
 
@@ -72,8 +72,10 @@ Windows 可运行 `powershell -ExecutionPolicy Bypass -File .\start.ps1`，进�
 - Mods 星数、无 Mod 的四档 PP 估算使用 `rosu-pp-js 4.0.1`，可能不同于 osu! 当前部署版本；不把倍率直接乘到原星数。
 - Sunny、Mixed、Daniel、Azusa、Companella、Interlude 和 MinaCalc 来自内置 Mania Map Analyser。详细分析 MSD 使用 0.72.3、93% 目标；4K 段位模型使用 0.74.0。Companella 是模型段位标签。
 - 7K 段位估算使用 Sunny RC / LN 档位表；4K 使用本地 Mixed/Sunny/Companella 与 MSD 近似。贡献曲线参考 [Mania Tracker 的公开代码](https://github.com/aleju03/mania-hub/blob/main/algorithms/player/dan-credit.ts)，不能当作正式玩家段位认证或完整网站算法复刻。
-- LN 比例为长条物件数 / 全部物件数，不按持续时间加权。7K LN 分支门槛 37.5%，4K 米段排除门槛 70%；这些是当前实现的用途门槛，不是 osu! 官方统一面图定义。上游谱型分类另有 RC / Mix / LN 阈值。
-- Dan ACC 使用 MAX 与 300 同为 300 权重的 stable 公式，可能与 lazer 显示准确率不同。不支持的 Mods、准确率/OD 不足、特殊结构等不会被硬填有效贡献。
+- LN 比例为长条物件数 / 全部物件数，不按持续时间加权。7K LN 分支门槛 37.5%，4K LN 至少45%并通过有效松手判定；这些是当前实现的用途门槛，不是 osu! 官方统一面图定义。上游谱型分类另有 RC / Mix / LN 阈值。
+- 4K LN Dan ACC 使用 MAX 305、300判定300权重的ScoreV2公式；RC及7K LN使用 MAX 与300同权重的Stable公式，可能与 lazer 显示准确率不同。不支持的 Mods、准确率/OD 不足、特殊结构等不会被硬填有效贡献。
+
+4K LN 新增独立贡献分支：长条物件占比至少45%，并采用 ManiaTracker 当前有效松手模型（含原速同列链、实际倍率、OD和LN/RC工作量判定）。Sunny完整谱面LN区间表作为主估计，低于LN5表起点时使用其低段kNN/结构模型。贡献准确率由MAX=305、300=300的ScoreV2公式重算，97%基准、91%最低、实际OD≥7；96%为−0.5075段，91%为−1.75段；98.5%为+0.15、99%为+0.3、99.7%起封顶+0.7。数字1–17使用用户提供的4K LN段位SVG素材。Difficulty Adjust直接替换OD，Hard Rock沿用上游窗口换算。LN身份比较的MSD使用0.72.3，RC/Companella仍使用0.74.0。来源固定为 [ManiaTracker commit 336d316](https://github.com/aleju03/mania-hub/tree/336d31641201286e09a126aaa8b0532ea2151e5a)，MIT许可模块与原始TS均保留在vendor/mania-tracker-ln；不包含网站图像或玩家数据。
 - 谱型时间轴为每 15 秒的主导类型；Jack / Stream / Tech / JHS 筛选是有效键型时长占比 ≥15%，LN 筛选为物件占比 ≥37.5%。索引最多 3000 张，不是全站曲库。
 - 预览按拍数等距，BPM/拍号改变会影响小节线；SV 只画侧栏，不模拟游戏中的实际滚动距离。倍率调整时间标尺，不重算预览标题的官方 NM 星数。
 - 推荐会把玩家 ID 发给 Mania Tracker 公共接口，不向其发送 osu! 密钥。建议收益不能相加当作总收益。音频下载依赖 Nerinyan / catboy 镜像；不绕过明确禁用的下载。
@@ -156,3 +158,7 @@ node --env-file-if-exists=.env scripts/render-dan.mjs '！dan kappa 75' '底图.
 | `dan` | `dn` |
 
 示例：`！cmp playerA （Player B）`、`！ms 谱面ID`、`！rsl 10-30 playerA`、`！bs#2 playerA`、`！rec on / off`、`@群友 ！dn epsilon`。使用 `#` 的群替换开头命令头。
+
+## Contributors
+
+- [HakuwaRi](https://github.com/HakuwaRi) — Dan 功能贡献

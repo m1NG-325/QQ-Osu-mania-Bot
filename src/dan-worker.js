@@ -8,11 +8,12 @@ import { analyzeEtternaFromText } from '../vendor/mania-analyser/js/ett/index.js
 import { calculateInterludeStar } from '../vendor/mania-analyser/js/interlude/index.js';
 import { sevenRiceVerdict,sevenLnVerdict } from './dan-ladders.js';
 import { sevenRiceExclusion } from './seven-rice-gates.js';
+import { fourLnChart } from './four-ln.js';
 
 try{
-  const {raw,rate}=workerData,parser=new OsuFileParser(raw);parser.process();
+  const {raw,rate,odFlag,starRating}=workerData,parser=new OsuFileParser(raw);parser.process();
   const p=parser.getParsedData();
-  if(parser.status!=='OK'||parser.gameMode!=='3'||![4,7].includes(p.columnCount))throw Error('Native 4K/7K rice only');
+  if(parser.status!=='OK'||parser.gameMode!=='3'||![4,7].includes(p.columnCount))throw Error('Native 4K/7K charts only');
   if(!p.noteStarts.length||p.noteStarts.length>50000||p.noteStarts.some(t=>!Number.isFinite(t)||t<0||t>7200000))throw Error('Invalid note data');
   if(p.columnCount===7){
     const isLn=p.noteTypes.filter(t=>(t&128)!==0).length/p.noteStarts.length>=.375;
@@ -56,6 +57,13 @@ try{
       Speed:Math.max(values.Stream,values.Jumpstream,values.Handstream),Tech:values.Technical,Stamina:values.Stamina}).sort((a,b)=>b[1]-a[1])[0][0];
     return {chart,primary,usedComp,source:mixed.companellaCapsule||mixed.actualEstimatorAlgorithm||'Mixed'};
   }
+  // LN identity uses native 0.72.3 Overall for its rating tiebreak; Companella
+  // keeps the independent 0.74.0 input used by the existing RC branch.
+  const identityMsd=lnRatio>=.45?await analyzeEtternaFromText(raw,{musicRate:rate,scoreGoal:.93,etternaVersion:'0.72.3'}):null;
+  const ln=lnRatio>=.45?fourLnChart(raw,{rate,odFlag,starRating,overall:identityMsd?.junkFile?null:identityMsd?.values?.Overall},parser):null;
+  if(ln){
+    parentPort.postMessage({result:{...ln,reason:stacked?'Stacked note heads':ln.reason}});
+  }else{
   const estimateAtRate=await estimate(rate);
   if(estimateAtRate.usedComp){
     for(const step of [.05,.1]){
@@ -66,6 +74,7 @@ try{
     }
   }
   parentPort.postMessage({result:{...estimateAtRate,chart:Math.max(.5,Math.round(estimateAtRate.chart*100)/100),
-    keys:4,rate,side:'Rice',reason:stacked?'Stacked note heads':lnRatio>=.7?'LN chart: rice credit unavailable':null}});
+    keys:4,rate,side:'Rice',reason:stacked?'Stacked note heads':null}});
+  }
   }
 }catch(error){parentPort.postMessage({error:error.message});}
