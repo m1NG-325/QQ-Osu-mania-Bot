@@ -1,3 +1,4 @@
+import { downloadAudio } from './audio-download.js';
 import { Worker } from 'node:worker_threads';
 import { mkdir, readFile, writeFile, readdir, stat, unlink } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
@@ -24,9 +25,9 @@ export async function extractAudio(archive, name) {
       workerData:{archive,name},execArgv:[],resourceLimits:{maxOldGenerationSizeMb:128}
     });
     let settled=false;
-    const finish=(error,data)=>{if(settled)return;settled=true;clearTimeout(timer);worker.terminate();error?reject(new UserError(error)):accept(Buffer.from(data));};
+    const finish=(error,data,code)=>{if(settled)return;settled=true;clearTimeout(timer);worker.terminate();error?reject(Object.assign(new UserError(error),{code})):accept(Buffer.from(data));};
     const timer=setTimeout(()=>finish('音频解包超时，谱包可能损坏。'),10000);
-    worker.once('message',message=>finish(message.error,message.data));
+    worker.once('message',message=>finish(message.error,message.data,message.code));
     worker.once('error',()=>finish('音频解包失败，谱包可能损坏。'));
     worker.once('exit',()=>{if(!settled)finish('音频解包异常退出。');});
   });
@@ -52,22 +53,7 @@ export class BeatmapAudio {
     return { path, name, title, mime: types[extension] };
   }
   async download(setId, sourceName, path) {
-    let audio;
-    for (const url of [`https://api.nerinyan.moe/d/${setId}?nv=1`, `https://catboy.best/d/${setId}`]) {
-      try {
-        const response = await this.fetch(url, { signal: AbortSignal.timeout(60000) });
-        if (!response.ok || Number(response.headers.get('content-length')) > MAX_ARCHIVE) { await response.body?.cancel(); continue; }
-        const chunks = []; let size = 0;
-        for await (const chunk of response.body) {
-          size += chunk.length;
-          if (size > MAX_ARCHIVE) throw new UserError('谱包超过 100 MB 下载限制。');
-          chunks.push(chunk);
-        }
-        audio = await extractAudio(Buffer.concat(chunks), sourceName);
-        break;
-      } catch { /* Try the other mirror; never substitute preview audio. */ }
-    }
-    if (!audio) throw new UserError('完整音频下载失败，谱包可能暂不可用或超过大小限制，请稍后重试。');
+    const audio = await downloadAudio(setId, sourceName, extractAudio, this.fetch);
     await writeFile(path, audio);
     // Only remove generated cache files, keeping at most 300 MB and 32 songs.
     const entries = await Promise.all((await readdir(this.directory)).filter(n => /^[a-f0-9]{64}\.(mp3|ogg|wav|m4a)$/.test(n)).map(async n => ({ path: resolve(this.directory, n), ...await stat(resolve(this.directory, n)) })));

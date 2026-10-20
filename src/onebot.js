@@ -1,3 +1,5 @@
+import { audioForQQ } from './qq-audio.js';
+
 export async function onebotCall(action, body, { url = process.env.ONEBOT_HTTP_URL || 'http://127.0.0.1:3000', token = process.env.ONEBOT_ACCESS_TOKEN, signal } = {}) {
   const response = await fetch(`${url.replace(/\/$/, '')}/${action}`, {
     method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
@@ -10,5 +12,6 @@ export async function onebotCall(action, body, { url = process.env.ONEBOT_HTTP_U
 }
 
 export async function sendAudio(event, audio, options) {
+  audio = await audioForQQ(audio, { signal: options?.signal });
   await onebotCall('upload_group_file', { group_id: event.group_id, file: audio.path, name: audio.name }, options);
 }

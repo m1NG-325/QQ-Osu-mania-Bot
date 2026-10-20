@@ -7,6 +7,7 @@ import { OsuApi, UserError } from './osu.js';
 import { Bindings } from './store.js';
 import { Bot, parseCommand } from './bot.js';
 import { renderCard } from './cards.js';
+import { cardForQQ } from './qq-image.js';
 import { groupCommand,groupPrefixes,prefixReply } from './group-command.js';
 import { onebotCall, sendAudio } from './onebot.js';
 import { queryLane, heavyLane, analysisLane, downloadLane, renderLane, ResultCache, deliveryBudget, timedWork, checkCancelled, safeError } from './runtime.js';
@@ -34,7 +35,7 @@ const apiCache = new ResultCache({ttl:10000,capacity:64,maxBytes:16*1024*1024});
 if (mode === 'live') { const get = api.get.bind(api); api.get = path => apiCache.get(path, () => get(path)); }
 const queries = new QueryService({bot,bindings,history,cache});
 const run = (command,sender='local',context={}) => isDanCommand(command) ? Promise.resolve({kind:'text',text:DAN_HELP}) : parseCommand(command)?.action==='状态'
-  ? Promise.resolve({kind:'text',text:`osu!mania bot v1.1.2\n运行 ${Math.floor(process.uptime())} 秒\n查询：${queryLane.active}/4，等待 ${queryLane.waiting.length}\n分析：${analysisLane.active}/2，等待 ${analysisLane.waiting.length}\n渲染：${renderLane.active}/2，等待 ${renderLane.waiting.length}\n音频：${downloadLane.active}/1，等待 ${downloadLane.waiting.length}\n记录开关仅影响发起人；可用 !记录 关闭 停止保存。`})
+  ? Promise.resolve({kind:'text',text:`osu!mania bot v1.1.3\n运行 ${Math.floor(process.uptime())} 秒\n查询：${queryLane.active}/4，等待 ${queryLane.waiting.length}\n分析：${analysisLane.active}/2，等待 ${analysisLane.waiting.length}\n渲染：${renderLane.active}/2，等待 ${renderLane.waiting.length}\n音频：${downloadLane.active}/1，等待 ${downloadLane.waiting.length}\n记录开关仅影响发起人；可用 !记录 关闭 停止保存。`})
   : queries.run(command,sender,context);
 const cards = new Map();
 const audioFiles = new Map();
@@ -91,14 +92,14 @@ async function sendQQ(event, result, signal) {
   checkCancelled(signal);
   if (result.kind === 'audio') {
     try { await sendAudio(event, result, {signal}); }
-    catch { checkCancelled(signal); await sendQQ(event, { kind: 'text', text: '音频已获取，但群文件上传失败，请检查机器人是否有上传群文件的权限。' },signal); }
+    catch (error) { checkCancelled(signal); await sendQQ(event, { kind: 'text', text: error instanceof UserError ? error.message : '音频已获取，但群文件上传失败，请检查机器人是否有上传群文件的权限。' },signal); }
     return;
   }
   let message;
   if (result.kind === 'text') message = [{ type: 'text', data: { text: result.text } }];
   else if (result.kind === 'background') message = [{ type: 'image', data: { file: result.url } }];
   else if (result.kind === 'image' && Buffer.isBuffer(result.buffer)) message = [{ type: 'image', data: { file: `base64://${result.buffer.toString('base64')}` } }];
-  else message = [{ type: 'image', data: { file: `base64://${(await renderCard(result,{signal})).toString('base64')}` } }];
+  else message = [{ type: 'image', data: { file: `base64://${(await cardForQQ(await renderCard(result,{signal}))).toString('base64')}` } }];
   if(result.links?.length)message.push({type:'text',data:{text:'\n'+result.links.join('\n')}});
   message.unshift({ type: 'at', data: { qq: String(event.user_id) } }, { type: 'text', data: { text: '\n' } });
   checkCancelled(signal);
@@ -114,7 +115,7 @@ const server = http.createServer(async (request, response) => {
       return response.end(await readFile(new URL('../public/index.html', import.meta.url)));
     }
     if (request.method === 'GET' && pathname === '/api/status') {
-      return json(response, 200, { mode, qqEnabled, version:'1.1.2', connection, uptime:Math.floor(process.uptime()), rssMB:Math.round(process.memoryUsage().rss/1024/1024), queues:{query:queryLane.status,heavy:heavyLane.status,analysis:analysisLane.status,audio:downloadLane.status,render:renderLane.status,sticker:stickerLane.status},cacheBytes:cache.bytes,imageBytes, bound: Boolean(bindings.get('local')) });
+      return json(response, 200, { mode, qqEnabled, version:'1.1.3', connection, uptime:Math.floor(process.uptime()), rssMB:Math.round(process.memoryUsage().rss/1024/1024), queues:{query:queryLane.status,heavy:heavyLane.status,analysis:analysisLane.status,audio:downloadLane.status,render:renderLane.status,sticker:stickerLane.status},cacheBytes:cache.bytes,imageBytes, bound: Boolean(bindings.get('local')) });
     }
     if (request.method === 'GET' && pathname.startsWith('/audio/')) {
       const audio = audioFiles.get(pathname);
@@ -204,4 +205,4 @@ const server = http.createServer(async (request, response) => {
 });
 server.requestTimeout = 30000;
 server.on('error', error => { logEvent('startup_failed',safeError(error)); console.error(`启动失败：${error.code}`); process.exitCode = 1; });
-server.listen(port, host, () => {logEvent('service_started');console.log(`Mania bot v1.1.2 (${mode}) → http://127.0.0.1:${port}`);});
+server.listen(port, host, () => {logEvent('service_started');console.log(`Mania bot v1.1.3 (${mode}) → http://127.0.0.1:${port}`);});

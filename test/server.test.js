@@ -100,7 +100,10 @@ test('HTTP preview and isolated mock OneBot dispatch', { timeout: 120000 }, asyn
   assert.equal(sent[0].authorization, 'Bearer mock-outbound');
   assert.equal(sent[0].body.group_id, 42);
   assert.deepEqual(sent[0].body.message[0], { type: 'at', data: { qq: '123' } });
-  assert.match(sent[0].body.message.find(segment => segment.type === 'image').data.file, /^base64:\/\/iVBOR/);
+  const cardFile=sent[0].body.message.find(segment=>segment.type==='image').data.file;
+  assert.ok(cardFile.startsWith('base64://'));
+  const cardMeta=await sharp(Buffer.from(cardFile.slice(9),'base64')).metadata();
+  assert.ok(['png','jpeg'].includes(cardMeta.format));assert.equal(cardMeta.width,1920);
   const custom={...event,group_id:123456789,user_id:456,message_id:2,message:[{type:'text',data:{text:'!bind'}}]};
   await post(custom);await delay(100);assert.equal(sent.length,1,'old prefix ignored in overridden group');
   await post({...custom,message_id:3,message:[{type:'text',data:{text:'#bind'}}]});
