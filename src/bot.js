@@ -5,6 +5,7 @@ import { hasMods } from './difficulty.js';
 import { analyzeText, modStars, mapPerformance, danContribution } from './compute.js';
 import { helpContent, helpText } from './help.js';
 import { BeatmapAudio } from './audio.js';
+import { BeatmapBackground } from './background.js';
 import { timeBestArgument, recentBest } from './time-best.js';
 import { recommendations } from './recommend.js';
 import { beatmapView, viewArguments } from './beatmap-view.js';
@@ -44,9 +45,9 @@ export function mapId(value) {
 }
 
 export class Bot {
-  constructor({ api, bindings, demo = true, audio = new BeatmapAudio(), history, mapIndex }) {
+  constructor({ api, bindings, demo = true, audio = new BeatmapAudio(), background = new BeatmapBackground(), history, mapIndex }) {
     this.api = api; this.bindings = bindings; this.demo = demo;
-    this.audio = audio;
+    this.audio = audio; this.background = background;
     this.history = history;
     this.mapIndex = mapIndex;
     this.senders = new SenderQueue();
@@ -149,12 +150,9 @@ export class Bot {
         catch { map.analysisUnavailable = true; }
       }
       if (action === 'm') return { kind: 'map', map, demo: this.demo };
-      const url = map.beatmapset?.covers?.cover;
-      if (!url) return { kind: 'text', text: this.demo
-        ? '演示模式没有真实背景图。切换真实数据后，!gb 会返回谱面封面背景。'
-        : '这张谱面暂时没有可用的封面背景。' };
-      return { kind: 'background', url: /^[1-9]\d*$/.test(String(map.beatmapset?.id))
-        ? `https://assets.ppy.sh/beatmaps/${map.beatmapset.id}/covers/fullsize.jpg` : url, demo: this.demo };
+      if (this.demo) return {kind:'text',text:'演示模式没有真实背景图。切换真实数据后，!gb 会提取指定难度的背景。'};
+      const image = await downloadLane.run(async () => this.background.get(map, await this.api.rawMap(map.id)), { signal: context.signal });
+      return {kind:'image',...image,demo:false};
     }
     const target = argument || this.bindings.get(sender);
     if (!target) throw new UserError('先用 !bind 你的osu玩家名 绑定自己的查询对象，或直接输入 !i 玩家名。每个群友的绑定独立保存。');

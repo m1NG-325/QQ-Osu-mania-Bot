@@ -1,5 +1,5 @@
 {
-  "version": "1.1.3",
+  "version": "1.1.4",
   "files": [
     {
       "path": ".env.example",
@@ -759,17 +759,17 @@
     {
       "path": "package-lock.json",
       "bytes": 19506,
-      "sha256": "1d3d2bb5bfce0f195cc370ed2a2c1c41f723c08652010ddcaea5d8f335ab0614"
+      "sha256": "83a6da69c14e8fd5e846d66d079db4406f9346dc34ce8df4745f381a37a652d5"
     },
     {
       "path": "package.json",
       "bytes": 481,
-      "sha256": "02edf1ed9759493ab3381fd8b418053bbc58baa07ce46ab732d4d2b0fa2ef66e"
+      "sha256": "c44eacf5fa5c3acec7429c92bf45185ac36d02c3f16e27dde00c257c0cabcac2"
     },
     {
       "path": "public/index.html",
-      "bytes": 12060,
-      "sha256": "f9a1da9a1ee784974e13c4e4b29f18b6dd8d721acf78780f88e6b311dafc3fd7"
+      "bytes": 12067,
+      "sha256": "e79eb9e6689a74e7c08dee533ba5a998cd620102700f535f192e32037e68eba6"
     },
     {
       "path": "README.en.md",
@@ -783,8 +783,8 @@
     },
     {
       "path": "RELEASE_NOTES.md",
-      "bytes": 399,
-      "sha256": "b3899ec41f564e2d46765da7bc182912e7504a26eb89b672886ceeafca608645"
+      "bytes": 394,
+      "sha256": "e7b8790897abbb244d81a34e70a40ffd1d56f848b30e1a386fc7dceb15f32813"
     },
     {
       "path": "scripts/export-demo.js",
@@ -828,8 +828,8 @@
     },
     {
       "path": "src/audio-download.js",
-      "bytes": 2608,
-      "sha256": "767a2c947b5213d672b01139eb3011891d99c4ede9cf8ff24675d89c0ea6697e"
+      "bytes": 2672,
+      "sha256": "31c7e15eafb8a52eb6664b12ebb704760e7b886d5046c1c66631bfee33cd46e5"
     },
     {
       "path": "src/audio-extract-worker.js",
@@ -847,6 +847,16 @@
       "sha256": "0355841efec14d79ca5af1e30026c4c180ab9cf51ab511215ef0b50f0227ae2e"
     },
     {
+      "path": "src/background-worker.js",
+      "bytes": 1946,
+      "sha256": "f403992907a76da5cdc9d1d9ca5acc64e5849c7144378c6c36d18bfdf8d69870"
+    },
+    {
+      "path": "src/background.js",
+      "bytes": 5412,
+      "sha256": "8dc25e16da61fcd1081cc43db75f7264cdb1b98d44622e918fd920ffe8d5d1ec"
+    },
+    {
       "path": "src/beatmap-limits.js",
       "bytes": 514,
       "sha256": "aa8daeec1166ef67a18b9091735b1864404b5e6b37592289e0a6f68b994ff5c8"
@@ -858,8 +868,8 @@
     },
     {
       "path": "src/bot.js",
-      "bytes": 13623,
-      "sha256": "9006ba31f38fe76757e784eb33c3aae92ce89fb6c79b9165238c309d3655fe97"
+      "bytes": 13611,
+      "sha256": "92e65c18db75e204ebfaee8cc4fe484f838484bbaf4e0d17033caeca80f0545e"
     },
     {
       "path": "src/cards.js",
@@ -943,8 +953,8 @@
     },
     {
       "path": "src/help.js",
-      "bytes": 6541,
-      "sha256": "e9b8acd11dadcc2612ddb4c013b7905345622b07005d2b74d788a44e79772204"
+      "bytes": 6550,
+      "sha256": "457ff9c38d5a8a035b39eaa596211fb0d31ca714838a8c4579014a64ba7679c4"
     },
     {
       "path": "src/history.js",
@@ -993,8 +1003,8 @@
     },
     {
       "path": "src/query-service.js",
-      "bytes": 1496,
-      "sha256": "845edeced5390dcb07d72aaf52b0772b9ec0a1783c1bdaa92427f54e03cb495e"
+      "bytes": 1516,
+      "sha256": "e9b32dce023ffe6aa02c202b1f53f51640b478483d26a35a043a69f4b1954dbc"
     },
     {
       "path": "src/recommend.js",
@@ -1008,8 +1018,8 @@
     },
     {
       "path": "src/runtime.js",
-      "bytes": 5036,
-      "sha256": "2eb92304995308191ccd96430d2ca1d1efa86f13e7e062ef2cb5ab1580ee9a80"
+      "bytes": 5049,
+      "sha256": "717b22279dc685a67bebad188d1c4dedce4fb8befde084da0e085941658f3871"
     },
     {
       "path": "src/score-compare.js",
@@ -1023,8 +1033,8 @@
     },
     {
       "path": "src/server.js",
-      "bytes": 13927,
-      "sha256": "59dd01d24740e5d0da4b051500fce7b24a54093e5247dac4b309ea461ddb8554"
+      "bytes": 14418,
+      "sha256": "7db983313cc1b19dfcb24aced456d1ba4432506e17cd0e405fb27ab3f27ec6b6"
     },
     {
       "path": "src/seven-rice-gates.js",
@@ -1065,6 +1075,11 @@
       "path": "test/audio.test.js",
       "bytes": 6857,
       "sha256": "1eef162293e89bd1d62bbd89daafb3bb469fd82bff07800d9452534528c813fc"
+    },
+    {
+      "path": "test/background.test.js",
+      "bytes": 4605,
+      "sha256": "a0ac8cfd2b0577e5e386f28c4beca7d9a2d20de7626d747cc4b67bf2863b4a50"
     },
     {
       "path": "test/beatmap-view.test.js",
@@ -1203,8 +1218,8 @@
     },
     {
       "path": "USAGE.md",
-      "bytes": 10414,
-      "sha256": "4c95342b1374aa3d65cce4ef1831f988bbbb77c1bc86841b5c5af5b20dfaec50"
+      "bytes": 10429,
+      "sha256": "f4b306b880bb0ffec80a1325dcc78aeb18d125b10467fad6df65d19aa8552a1e"
     },
     {
       "path": "vendor/dan-sticker/bot.py",

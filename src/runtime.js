@@ -43,7 +43,7 @@ export class SenderQueue {
   }
 }
 
-export const queryBudget = action => action === 'audio' ? 180000 : action === '群榜' ? 300000 : 45000;
+export const queryBudget = action => ['audio','gb'].includes(action) ? 180000 : action === '群榜' ? 300000 : 45000;
 export const deliveryBudget = action => queryBudget(action) + 60000 + (action === 'audio' ? 120000 : 15000);
 export function checkCancelled(signal) {
   if (signal?.aborted) throw new UserError('查询已取消。');

@@ -15,8 +15,8 @@ export class QueryService {
         || parsed?.range&&parsed.range.end-parsed.range.start+1>16;
       const lane=heavy?this.heavy:this.ordinary;
       const execute=()=>this.bot.run(command,sender,{...context,signal});
-      const work=()=>parsed?.action==='audio'?execute():lane.run(execute,{signal});
-      const mutable=['bind','unbind','记录','对比','周报','月报','audio','随机','练习','群榜'];
+      const work=()=>['audio','gb'].includes(parsed?.action)?execute():lane.run(execute,{signal});
+      const mutable=['bind','unbind','记录','对比','周报','月报','audio','gb','随机','练习','群榜'];
       const result=await (mutable.includes(parsed?.action)?work():this.cache.get(`${sender}:${this.bindings.get(sender)||''}:${command}`,work));
       checkCancelled(signal);
       await this.history?.capture(result,sender);

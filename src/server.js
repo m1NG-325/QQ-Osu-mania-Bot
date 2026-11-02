@@ -35,7 +35,7 @@ const apiCache = new ResultCache({ttl:10000,capacity:64,maxBytes:16*1024*1024});
 if (mode === 'live') { const get = api.get.bind(api); api.get = path => apiCache.get(path, () => get(path)); }
 const queries = new QueryService({bot,bindings,history,cache});
 const run = (command,sender='local',context={}) => isDanCommand(command) ? Promise.resolve({kind:'text',text:DAN_HELP}) : parseCommand(command)?.action==='状态'
-  ? Promise.resolve({kind:'text',text:`osu!mania bot v1.1.3\n运行 ${Math.floor(process.uptime())} 秒\n查询：${queryLane.active}/4，等待 ${queryLane.waiting.length}\n分析：${analysisLane.active}/2，等待 ${analysisLane.waiting.length}\n渲染：${renderLane.active}/2，等待 ${renderLane.waiting.length}\n音频：${downloadLane.active}/1，等待 ${downloadLane.waiting.length}\n记录开关仅影响发起人；可用 !记录 关闭 停止保存。`})
+  ? Promise.resolve({kind:'text',text:`osu!mania bot v1.1.4\n运行 ${Math.floor(process.uptime())} 秒\n查询：${queryLane.active}/4，等待 ${queryLane.waiting.length}\n分析：${analysisLane.active}/2，等待 ${analysisLane.waiting.length}\n渲染：${renderLane.active}/2，等待 ${renderLane.waiting.length}\n音频：${downloadLane.active}/1，等待 ${downloadLane.waiting.length}\n记录开关仅影响发起人；可用 !记录 关闭 停止保存。`})
   : queries.run(command,sender,context);
 const cards = new Map();
 const audioFiles = new Map();
@@ -56,8 +56,8 @@ if(qqEnabled){
   },60000);timer.unref();
 }
 let imageBytes=0;
-function storeImage(path,image) {
-  cards.set(path,{image,expires:Date.now()+10*60*1000});imageBytes+=image.length;
+function storeImage(path,image,mime) {
+  cards.set(path,{image,mime,expires:Date.now()+10*60*1000});imageBytes+=image.length;
   while(cards.size>40||imageBytes>64*1024*1024){const key=cards.keys().next().value;imageBytes-=cards.get(key).image.length;cards.delete(key);}
 }
 
@@ -115,7 +115,7 @@ const server = http.createServer(async (request, response) => {
       return response.end(await readFile(new URL('../public/index.html', import.meta.url)));
     }
     if (request.method === 'GET' && pathname === '/api/status') {
-      return json(response, 200, { mode, qqEnabled, version:'1.1.3', connection, uptime:Math.floor(process.uptime()), rssMB:Math.round(process.memoryUsage().rss/1024/1024), queues:{query:queryLane.status,heavy:heavyLane.status,analysis:analysisLane.status,audio:downloadLane.status,render:renderLane.status,sticker:stickerLane.status},cacheBytes:cache.bytes,imageBytes, bound: Boolean(bindings.get('local')) });
+      return json(response, 200, { mode, qqEnabled, version:'1.1.4', connection, uptime:Math.floor(process.uptime()), rssMB:Math.round(process.memoryUsage().rss/1024/1024), queues:{query:queryLane.status,heavy:heavyLane.status,analysis:analysisLane.status,audio:downloadLane.status,render:renderLane.status,sticker:stickerLane.status},cacheBytes:cache.bytes,imageBytes, bound: Boolean(bindings.get('local')) });
     }
     if (request.method === 'GET' && pathname.startsWith('/audio/')) {
       const audio = audioFiles.get(pathname);
@@ -129,7 +129,7 @@ const server = http.createServer(async (request, response) => {
     if (request.method === 'GET' && pathname.startsWith('/cards/')) {
       const stored = cards.get(pathname);
       if (!stored || stored.expires<Date.now()) { if(stored){imageBytes-=stored.image.length;cards.delete(pathname);} return json(response, 404, { error: '图片已过期，请重新查询。' }); }
-      response.writeHead(200, { 'Content-Type': pathname.endsWith('.jpg') ? 'image/jpeg' : 'image/png', 'Cache-Control': 'no-store' });
+      response.writeHead(200, { 'Content-Type': stored.mime || (pathname.endsWith('.jpg') ? 'image/jpeg' : 'image/png'), 'Cache-Control': 'no-store' });
       return response.end(stored.image);
     }
     if (request.method === 'POST' && pathname === '/api/command') {
@@ -142,6 +142,13 @@ const server = http.createServer(async (request, response) => {
       if (typeof data.command !== 'string' || data.command.length > 300) throw new UserError('命令为空或过长。');
       return await timedWork(async signal => {
       const result = await run(data.command,'local',{signal});
+      if (result.kind === 'image' && Buffer.isBuffer(result.buffer)) {
+        const extension = {'image/jpeg':'jpg','image/png':'png','image/gif':'gif','image/webp':'webp'}[result.mime];
+        if (!extension) throw new UserError('图片格式不支持。');
+        const path = '/cards/' + randomUUID() + '.' + extension;
+        storeImage(path,result.buffer,result.mime);
+        return json(response,200,{kind:'image',image:path,demo:result.demo});
+      }
       if (result.kind === 'audio') {
         const url = `/audio/${randomUUID()}`;
         audioFiles.set(url, result);
@@ -205,4 +212,4 @@ const server = http.createServer(async (request, response) => {
 });
 server.requestTimeout = 30000;
 server.on('error', error => { logEvent('startup_failed',safeError(error)); console.error(`启动失败：${error.code}`); process.exitCode = 1; });
-server.listen(port, host, () => {logEvent('service_started');console.log(`Mania bot v1.1.3 (${mode}) → http://127.0.0.1:${port}`);});
+server.listen(port, host, () => {logEvent('service_started');console.log(`Mania bot v1.1.4 (${mode}) → http://127.0.0.1:${port}`);});

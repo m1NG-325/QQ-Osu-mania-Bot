@@ -4,13 +4,15 @@ const MAX_ARCHIVE = 100 * 1024 * 1024;
 const failure = (code) => Object.assign(new Error(code), { code });
 
 // Fixed public mirrors receive only the beatmapset ID, never osu! or QQ credentials.
-export async function downloadAudio(setId, sourceName, extract, fetcher) {
-  const sources = [
+export const archiveSources = setId => [
     `https://dl.sayobot.cn/beatmaps/download/novideo/${setId}`,
     `https://osu.direct/api/d/${setId}`,
     `https://api.nerinyan.moe/d/${setId}?nv=1`,
     `https://catboy.best/d/${setId}`
-  ];
+   ];
+
+export async function downloadAudio(setId, sourceName, extract, fetcher) {
+  const sources = archiveSources(setId);
   const failures = [];
   for (const url of sources) {
     try {
